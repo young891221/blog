@@ -17,37 +17,43 @@ devtools는 thymeleaf, Freemarker, Groovy Templates, Velocity, Mustache 등 다�
 
 ## 간단 설정
 
-1.build.gradle파일에 devtools dependency를 추가해 줍니다.
+1.build.gradle파일에 devtools dependency를 추가해 줍니다.<br>
 ![](/images/Spring/devtools/1.build.png "build.gradle 설정")<br><br>
 
-2.intellij에서 Action을 찾는 단축키인 `ctrl+shift+A`로 registry를 검색합니다.
+2.intellij에서 Action을 찾는 단축키인 `ctrl+shift+A`로 registry를 검색합니다.<br>
 ![](/images/Spring/devtools/2.registry_path.png)<br><br>
 
-![](/images/Spring/devtools/3.registry_setting.png)<br>`compiler.automake.allow.when.app.running`을 체크해 줍니다.<br><br>
+3.`compiler.automake.allow.when.app.running`을 체크해 줍니다.<br>
+![](/images/Spring/devtools/3.registry_setting.png)<br><br>
 
-![](/images/Spring/devtools/4.settings.png)<br>Settings -> Build -> Compiler에서 `Build project automatically`를 체크해 줍니다.<br><br>
+4.Settings -> Build -> Compiler에서 `Build project automatically`를 체크해 줍니다.<br>
+![](/images/Spring/devtools/4.settings.png)<br><br>
 
 ## Property Setting
 기본 default설정이 되어 있지만 커스텀하게 설정을 바꾸고 싶으면 방법은 다음 두가지 방법이 있습니다.
 
-![](/images/Spring/devtools/5.yml.png)<br>application.yml 설정<br><br>
+application.yml 설정<br>
+![](/images/Spring/devtools/5.yml.png)<br><br>
 
-![](/images/Spring/devtools/6.application.png)<br>서버코드 main class 설정<br><br>
+서버코드 main class 설정<br>
+![](/images/Spring/devtools/6.application.png)<br><br>
 
 ## 추가팁
 livereload기능을 사용하기 위해선 Chrome, Firefox, Safari용 플러그인을 각각 사용하시는 브라우저에 추가해 주어야 합니다.
 크롬의 경우를 예를 들어 설명하겠습니다.
 
-![](/images/Spring/devtools/7.livereload.png)<br>[chrome livereload plugin 다운][3]<br><br>
+[chrome livereload plugin 다운][3]<br>
+![](/images/Spring/devtools/7.livereload.png)<br><br>
 
-![](/images/Spring/devtools/8.button.png)<br>livereload 기능 on!<br><br>
+livereload 기능 on!<br>
+![](/images/Spring/devtools/8.button.png)<br><br>
 
-![]()
-
+##### 최종결과! 새로고침없이 자동 reload!!
+![](/images/Spring/devtools/9.result.gif)<br><br>
 
 devtools 설정이 모두 완료되었습니다. 모든 소스는 [guithub][4]에서 보실 수 있습니다.
 
 [1]: https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3
 [2]: https://github.com/spring-projects/spring-loaded
 [3]: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=ko
-[4]: 
+[4]: https://github.com/young891221/devtools
