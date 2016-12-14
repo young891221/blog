@@ -16,9 +16,12 @@ devtools는 thymeleaf, Freemarker, Groovy Templates, Velocity, Mustache 등 다�
 - livereload.com에서 Chrome, Firefox, Safari용 플러그인을 설치하여 사용할 수 있습니다.(npm의 hot-reload-server처럼 새로고침없이 바로 갱신됩니다.)
 
 ## 간단 설정
-![](/images/Spring/devtools/1.build.png "build.gradle 설정")<br>build.gradle파일에 devtools dependency를 추가해 줍니다.<br><br>
 
-![](/images/Spring/devtools/2.registry_path.png)<br>intellij에서 Action을 찾는 단축키인 `ctrl+shift+A`로 registry를 검색합니다.<br><br>
+1.build.gradle파일에 devtools dependency를 추가해 줍니다.
+![](/images/Spring/devtools/1.build.png "build.gradle 설정")<br><br>
+
+2.intellij에서 Action을 찾는 단축키인 `ctrl+shift+A`로 registry를 검색합니다.
+![](/images/Spring/devtools/2.registry_path.png)<br><br>
 
 ![](/images/Spring/devtools/3.registry_setting.png)<br>`compiler.automake.allow.when.app.running`을 체크해 줍니다.<br><br>
 
