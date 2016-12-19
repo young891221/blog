@@ -1,4 +1,3 @@
-![](/images/Tobi/tobi_intro.jpg)<br>
 <p align="center">
 <img src="/images/Tobi/tobi_intro.jpg"/>
 </p>
