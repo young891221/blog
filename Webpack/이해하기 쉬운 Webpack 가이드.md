@@ -60,10 +60,15 @@ module.exports = {
 ```
 
 #### loader
-저희가 webpack을 사용하는 이유에 해당하는 기능입니다. loader는 bundling을 진행하며 실행되는 일종의 함수라 생각합니다. loader부분에서 흔히 사용하는 esLint와 babel을 사용하는 코드입니다.
-- preLoaders: 
-- loaders: 
-- postLoaders: 
+저희가 webpack을 사용하는 이유에 해당하는 기능입니다. loader는 bundling을 진행하며 실행되는 일종의 함수라 생각합니다. loader부분에서 흔히 사용하는 eslint와 babel을 사용해 보겠습니다.
+- preLoaders: loaders가 실행되기 전에 실행할 loader들을 선언하는 부분입니다.
+- loaders: 메인으로 돌아가는 loader들을 선언하는 부분입니다.
+- postLoaders: loaders가 실행된 후에 실행할 loader들을 선언하는 부분입니다.
+	- test: loader를 적용시킬 목적의 파일들을 정규식을 명시해 줍니다.
+	- loader: 사용할 loader를 명시합니다.
+	- exclude: loader가 진행될 때 배제시킬 파일들을 명시해 줍니다.
+	- query: loader는 query를 통해 매개 변수를 전달할 수 있습니다.
+	- 기타 자세한 사항은 여기를 참고(TODO:http://webpack.github.io/docs/using-loaders.html)하세요.
 ```javascript
 module.exports =  {
     preLoaders: [
