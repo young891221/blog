@@ -1,6 +1,7 @@
 # 이해하기 쉬운 webpack 가이드
 연초 계획으로 실서비스 코드를 개선하는 역할을 맡게 되었습니다. 그래서 작년 세미나(JSCON..기타)에서 강력하게 어필되었던 ES6 + Webpack 기반의 프론트 엔드 환경을 구성하기로 정하였습니다.
-제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 미숙한 부분은 가감없이 댓글 부탁드립니다.
+제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 모든 자료는 [github](https://github.com/young891221/SpringBoot-Webpackhttps://github.com/young891221/SpringBoot-Webpack)에 있습니다. 
+미숙한 부분은 가감없이 댓글 부탁드립니다.
 
 ## 1. webpack이란?
 webpack이란 Module Bundler입니다. [webpack](http://webpack.github.io/docs/)으로 들어가시면 심플하게 딱 쓰여있어서 바로 확인하실 수 있습니다. 그럼 bundler란 무엇일까요? wiki에는 다음과 같이 정의하고 있습니다.
@@ -136,8 +137,10 @@ plugins: [
 - output으로 나오는 스크립트 파일을 minify해 줍니다.
 - [API 스펙](https://github.com/webpack/docs/wiki/list-of-plugins#uglifyjsplugin)
 
-`ExtractTextPlugin`
--  
+`new ExtractTextPlugin("styles.css")`
+- js파일이 로딩되는 동안 그 안에 있는 css파일들도 같이 로드되지 못합니다.
+- ExtractTextPlugin은 js bundle파일에서 css bundle파일을 분리해 줍니다.
+- css bundle이 js bundle파일과 병렬로 로드되므로 프로젝트 규모가 클수록 더 빠를 것입니다. 
 
 `EnvironmentPlugin`
 - process.env를 통해 환경 변수를 받습니다.
@@ -236,8 +239,8 @@ module.exports = config;
 ## 5. 끝으로...
 
 
-참조 URL
-http://webpack.github.io/docs/
-https://webpack.js.org/
-https://github.com/webpack/docs/wiki/list-of-plugins
+`참조 URL`
+- http://webpack.github.io/docs/
+- https://webpack.js.org/
+- https://github.com/webpack/docs/wiki/list-of-plugins
 
