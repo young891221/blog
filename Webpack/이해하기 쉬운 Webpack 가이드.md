@@ -27,12 +27,13 @@ webpack을 써야 하는 이유는 [webpack docs](http://webpack.github.io/docs/
 - 3rd-party library에 대해 모듈로 통합하는 기능을 제공합니다.
 - module bundler의 대부분의 기능을 사용자가 커스터마이징하여 사용할 수 있습니다.
 - 다양한 플로그인을 제공합니다.
+
 > **chunk**: chunk란 코드 혹은 모듈을 묶은 하나의 단위로 정의하였습니다. 
 
 ## 3. webpack은 왜 쓰일까?
 Browsify, Grunt, Gulp 등 도구들은 webpack과 무슨 차이가 있을까요?? 
 - webpack은 모든 리소스들(javascript, css, images, fonts)을 [dependency graph](https://webpack.js.org/concepts/dependency-graph/)를 생성시켜주며 빌드시켜주는 도구입니다.
-- webpack은 `require()`를 사용하는 것처럼 리소스들간의 의존성 관계를 형성시켜주며 어떻게 javascript를 bundling할 것인지 결정해 줍니다.
+- webpack은 `require()`를 사용하여 리소스들간의 의존성 관계를 형성시켜주며 어떻게 javascript를 bundling할 것인지 결정해 줍니다.
 - 크고 복잡하며 다양한 리소스들이 들어있는 프로젝트에는 webpack을 사용하는 것이 최상의 선택일 것입니다.
 - 질문에 대한 답으로 Grunt, Gulp는 오로지 리소스들에 대한 툴로 사용되며 dependency graph에 대한 개념이 없습니다. Browsify는 비슷한 도구이지만 속도면에서 webpack이 더 우월합니다.
 
@@ -239,8 +240,8 @@ module.exports = config;
 
 ## 5. 끝으로...
 실무에서 webpack을 써보니 일단 작년까지 핫하던 Grunt나 Gulp를 충분히 대체시켜주는게 인상적이였습니다. 무엇보다 ES6를 도입시킬 수 있게 해주었고 watch기능을 통해 빠르고 편리한 개발환경을 제공해 주는 것이 저한테는 가장 큰 장점이였습니다.
-다만, Spring 환경에서는 watch로 변경을 감지해도 바로바로 리소스가 업데이트되지 않는 점(저는 devtool을 사용해서 리소스 업로드에 있어 livereload를 가능하게 해주었습니다.)과 document문서가 빠르게 파악하고 사용하게끔 심플하게 구성되지 못한 점이 아쉬웠습니다.
-그래도 현재 이만한 bundling tool은 없다고 생각합니다. 다음에는 제가 적용한 coffee script 제거편을 써보도록 하겠습니다. 긴 글 읽어주셔서 감사합니다.
+<br>다만, Spring 환경에서는 watch로 변경을 감지해도 바로바로 리소스가 업데이트되지 않는 점(저는 devtool을 사용해서 리소스 업로드에 있어 livereload를 가능하게 해주었습니다.)과 document문서가 빠르게 파악하고 사용하게끔 심플하게 구성되지 못한 점이 아쉬웠습니다.
+<br>그래도 현재 이만한 bundling tool은 없다고 생각합니다. 다음에는 제가 적용한 coffee script 제거편을 써보도록 하겠습니다. 긴 글 읽어주셔서 감사합니다.
 
 `참조 URL`
 - http://webpack.github.io/docs/
