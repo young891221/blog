@@ -3,7 +3,7 @@
 제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 미숙한 부분은 가감없이 댓글 부탁드립니다.
 
 ## 1. webpack이란?
-webpack이란 Module Bundler입니다. [webpack][1.webpack]으로 들어가시면 심플하게 딱 쓰여있어서 바로 확인하실 수 있습니다. 그럼 bundler란 무엇일까요? wiki에는 다음과 같이 정의하고 있습니다.
+webpack이란 Module Bundler입니다. [webpack](http://webpack.github.io/docs/)으로 들어가시면 심플하게 딱 쓰여있어서 바로 확인하실 수 있습니다. 그럼 bundler란 무엇일까요? wiki에는 다음과 같이 정의하고 있습니다.
 
 <p align="center">
 <img src="/images/Webpack/1.png"/>
@@ -18,8 +18,8 @@ webpack이란 Module Bundler입니다. [webpack][1.webpack]으로 들어가시�
 - 즉, webpack은 의존성들의 관계들을 묶으면서 여러가지 기능들을 자동 수행시켜주는 도구입니다.
 
 ## 2. webpack의 장점은?
-webpack을 써야 하는 이유는 webpack docs(TODO:사이트 주소)에 자세히 나와 있습니다. 그래도 빠르게 장점을 보고 싶은 분들을 위해 간략하게 장점을 요약하였습니다.
-- 다른 module bundler에 비해 performance가 우수합니다.(TODO: 구글링 자료)
+webpack을 써야 하는 이유는 [webpack docs](http://webpack.github.io/docs/what-is-webpack.html)에 자세히 나와 있습니다. 그래도 빠르게 장점을 보고 싶은 분들을 위해 간략하게 장점을 요약하였습니다.
+- 다른 module bundler에 비해 [performance](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules/)가 우수합니다.
 - Code Split: chunk 단위로 의존성 트리를 동기적, 비동기적으로 분할할 수 있습니다. 
 - Loader가 존재하여 다른 리소스를 순수 JavaScript로 변환하여 모든 리소스에 대한 모듈을 구성해 줍니다.
 	- babel을 사용하여 ES6와 같이 브라우저에서 지원되지 않는 script code를 변환하여 사용할 수 있습니다.
@@ -28,13 +28,12 @@ webpack을 써야 하는 이유는 webpack docs(TODO:사이트 주소)에 자세
 - 다양한 플로그인을 제공합니다.
 > **chunk**: chunk란 코드 혹은 모듈을 묶은 하나의 단위로 정의하였습니다. 
 
-## 3. webpack없이 ES6를 개발한다면?
-이제까지 webpack의 기본 개념에 대해 살펴보며 이론적으로 어떠한 개념인지 이해하셨을 생각합니다.(그렇죠...?) 그래도 정확하게 이해가 안된다면 아래 예제를 보면 더 쉽게 이해가 가실 겁니다.
-프론트 코드를 개발하는데 coffee script나 ES6문법으로 개발하였다고 가정하겠습니다. 이 코드를 흔히 쓰는 Spring, Python, 기타.. 웹 어플리리케이션 환경에서 개발을 진행하는데 webpack이 없다면??
-매번 빌드할때 마다 babel(TODO:사이트 주소)(JavaScript TransFiler)을 사용하여 coffee script, ES6 코드를 순수 Javascript 코드로 변환해 주어야 할 것입니다. 일일이 매번 수정이 일어날 때마다 말이죠.
-
-
-
+## 3. webpack은 왜 쓰일까?
+Browsify, Grunt, Gulp 등 도구들은 webpack과 무슨 차이가 있을까요?? 
+- webpack은 모든 리소스들(javascript, css, images, fonts)을 [dependency graph](https://webpack.js.org/concepts/dependency-graph/)를 생성시켜주며 빌드시켜주는 도구입니다.
+- webpack은 `require()`를 사용하는 것처럼 리소스들간의 의존성 관계를 형성시켜주며 어떻게 javascript를 bundling할 것인지 결정해 줍니다.
+- 크고 복잡하며 다양한 리소스들이 들어있는 프로젝트에는 webpack을 사용하는 것이 최상의 선택일 것입니다.
+- 질문에 대한 답으로 Grunt, Gulp는 오로지 리소스들에 대한 툴로 사용되며 dependency graph에 대한 개념이 없습니다. Browsify는 비슷한 도구이지만 속도면에서 webpack이 더 우월합니다.
 
 ## 4. webpack 주요 기능
 webpack의 필요성을 아셨다면 본격적으로 webpack의 주요 기능들을 살펴 보겠습니다. 예제 코드를 보며 하나씩 살펴보도록 하겠습니다. webpack은 기본적으로 `webpack.config.js`파일에서 설정할 수 있습니다.
@@ -45,7 +44,7 @@ webpack에서는 bundling되기 위한 파일들을 묶을 수 있도록 entry�
 	- key, value 방식으로 선언할 경우 key값은 파일의 이름이 됩니다.
 - output 프로퍼티는 bundling되고 만들어질 파일에 대한 정보를 명시해 주면 됩니다.
 	- entry 프로퍼티에서 선언된 key의 이름은 `[name]`으로 사용되어 파일이 만들어집니다.
-다양한 선언방식은 이곳(TODO:사이트 주소)을 참고해 주시기 바랍니다. 
+다양한 선언방식은 [이곳](http://webpack.github.io/docs/configuration.html#entry)을 참고해 주시기 바랍니다. 
 ```javascript
 //webpack.config.js
 module.exports = {
@@ -60,7 +59,7 @@ module.exports = {
 ```
 
 ### loader
-저희가 webpack을 사용하는 이유에 해당하는 기능입니다. loader는 bundling을 진행하며 실행되는 일종의 함수역할을 맡고 있습니다. loader부분에서 흔히 쓰이는 eslint와 babel을 사용해 보겠습니다.
+loader는 bundling을 진행하며 실행되는 일종의 함수역할을 맡고 있습니다. 주로 coffee.js나 JSX같은 파일들의 transfiling 기능을 수행합니다. 흔히 쓰이는 eslint와 babel을 사용해 보겠습니다.
 - preLoaders: loaders가 실행되기 전에 실행할 loader들을 선언하는 부분입니다.
 - loaders: 메인으로 돌아가는 loader들을 선언하는 부분입니다.
 - postLoaders: loaders가 실행된 후에 실행할 loader들을 선언하는 부분입니다.
@@ -68,7 +67,7 @@ module.exports = {
 	- loader: 사용할 loader를 명시합니다.
 	- exclude: loader가 진행될 때 배제시킬 파일들을 명시해 줍니다.
 	- query: loader는 query를 통해 매개 변수를 전달할 수 있습니다.
-	- 기타 자세한 스펙은 여기를 참고(TODO:http://webpack.github.io/docs/using-loaders.html)하세요.
+	- 기타 자세한 스펙은 여기를 [참고](http://webpack.github.io/docs/using-loaders.html)하세요.
 ```javascript
 module.exports =  {
     preLoaders: [
@@ -104,6 +103,48 @@ module.exports =  {
  
  
 ### plugins
+플러그인의 종류가 너무 많기에 예제로 쓰이는 기능들에 대해서만 간단하게 소개해 드립니다.
+
+```javascript
+plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new CommonsChunkPlugin({
+            name: "commons",
+            filename: "common.js",
+            minChunks: Infinity,
+        })
+    ]
+```
+`new webpack.optimize.OccurrenceOrderPlugin(preferEntry)`
+- 발생 시점에 따라 ID값을 할당시켜주며 자주 사용되는 ID는 더 낮은 ID를 갖습니다. 그래서 예측 가능하게 해줍니다.
+- preferEntry의 우선순위를 높입니다.
+
+`new HotModuleReplacementPlugin()`
+- dev-server 모드에서 Hot Module Replace를 가능하게 해줍니다.
+- 현재 사용되는 github의 예제에서는 Spring 환경이기에 적용되지 않습니다.(궁금해서 넣어봤습니다.)
+
+`new NoErrorsPlugin()`
+- 컴파일 도중 오류가 일어난 리소스들은 제외시켜주고 컴파일 해줍니다.
+
+`new webpack.optimize.CommonsChunkPlugin(option)`
+- 공유되는 common script파일을 생성해 주며 각종 옵션을 통해 커스터마이징 설정이 가능합니다.
+- [API 스펙](https://github.com/webpack/docs/wiki/list-of-plugins#commonschunkplugin)
+
+`UglifyJsPlugin`
+- output으로 나오는 스크립트 파일을 minify해 줍니다.
+- [API 스펙](https://github.com/webpack/docs/wiki/list-of-plugins#uglifyjsplugin)
+
+`ExtractTextPlugin`
+-  
+
+`EnvironmentPlugin`
+- process.env를 통해 환경 변수를 받습니다.
+- 예제에서 watch mode인지 real mode인지 구분시켜주는 변수를 받습니다.
+
+`new webpack.WatchIgnorePlugin(paths)`
+- paths(정규식 or 경로)에 있는 리소스들은 watch시 제외됩니다.(유용할거 같아서 추가했습니다.) 
 
 ### 응용코드
 ```javascript
@@ -162,7 +203,7 @@ const common = {
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
         new CommonsChunkPlugin({
             name: "commons",
             filename: "common.js",
@@ -195,6 +236,8 @@ module.exports = config;
 ## 5. 끝으로...
 
 
+참조 URL
+http://webpack.github.io/docs/
+https://webpack.js.org/
+https://github.com/webpack/docs/wiki/list-of-plugins
 
-
-[1.webapck]: http://webpack.github.io/docs/
