@@ -148,6 +148,9 @@ plugins: [
 - process.env를 통해 환경 변수를 받습니다.
 - 예제에서 watch mode인지 real mode인지 구분시켜주는 변수를 받습니다.
 
+`webpack-merge`
+- 여러 config파일들을 합쳐줍니다.
+
 `new webpack.WatchIgnorePlugin(paths)`
 - paths(정규식 or 경로)에 있는 리소스들은 watch시 제외됩니다.(유용할거 같아서 추가했습니다.) 
 
