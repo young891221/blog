@@ -1,5 +1,5 @@
 # 이해하기 쉬운 webpack 가이드
-연초 계획으로 실서비스 코드를 개선하는 역할을 맡게 되었습니다. 그래서 작년 세미나(JSCON..기타)에서 강력하게 어필되었던 ES6 + Webpack 기반의 프론트 엔드 환경을 구성하기로 정하였습니다.
+연초 계획으로 실서비스 코드를 개선하는 역할을 맡게 되었습니다. 작년 세미나(JSCON, s67..기타)에서 강력하게 어필되어 써보고 싶었던 ES6 + Webpack 기반의 프론트 엔드 환경을 구성하기로 하였습니다. 그리하여 정리를 시작하게 되었고 
 제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 모든 자료는 [github](https://github.com/young891221/SpringBoot-Webpackhttps://github.com/young891221/SpringBoot-Webpack)에 있습니다. 
 미숙한 부분은 가감없이 댓글 부탁드립니다.
 
@@ -22,7 +22,7 @@ webpack이란 Module Bundler입니다. [webpack](http://webpack.github.io/docs/)
 webpack을 써야 하는 이유는 [webpack docs](http://webpack.github.io/docs/what-is-webpack.html)에 자세히 나와 있습니다. 그래도 빠르게 장점을 보고 싶은 분들을 위해 간략하게 장점을 요약하였습니다.
 - 다른 module bundler에 비해 [performance](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules/)가 우수합니다.
 - Code Split: chunk 단위로 의존성 트리를 동기적, 비동기적으로 분할할 수 있습니다. 
-- Loader가 존재하여 다른 리소스를 순수 JavaScript로 변환하여 모든 리소스에 대한 모듈을 구성해 줍니다.
+- Loader가 존재하여 다른 리소스를 순수 JavaScript로 변환하고 모든 리소스에 대한 모듈을 구성해 줍니다.
 	- babel을 사용하여 ES6와 같이 브라우저에서 지원되지 않는 script code를 변환하여 사용할 수 있습니다.
 - 3rd-party library에 대해 모듈로 통합하는 기능을 제공합니다.
 - module bundler의 대부분의 기능을 사용자가 커스터마이징하여 사용할 수 있습니다.
@@ -31,11 +31,12 @@ webpack을 써야 하는 이유는 [webpack docs](http://webpack.github.io/docs/
 > **chunk**: chunk란 코드 혹은 모듈을 묶은 하나의 단위로 정의하였습니다. 
 
 ## 3. webpack은 왜 쓰일까?
-Browsify, Grunt, Gulp 등 도구들은 webpack과 무슨 차이가 있을까요?? 
-- webpack은 모든 리소스들(javascript, css, images, fonts)을 [dependency graph](https://webpack.js.org/concepts/dependency-graph/)를 생성시켜주며 빌드시켜주는 도구입니다.
+Browsify, Grunt, Gulp 등의 도구들은 webpack과 무슨 차이가 있을까요?? 
+- webpack은 모든 리소스들(javascript, css, images, fonts, etc)에 대한 [dependency graph](https://webpack.js.org/concepts/dependency-graph/)를 생성하여 빌드시켜주는 도구입니다.
 - webpack은 `require()`를 사용하여 리소스들간의 의존성 관계를 형성시켜주며 어떻게 javascript를 bundling할 것인지 결정해 줍니다.
 - 크고 복잡하며 다양한 리소스들이 들어있는 프로젝트에는 webpack을 사용하는 것이 최상의 선택일 것입니다.
-- 질문에 대한 답으로 Grunt, Gulp는 오로지 리소스들에 대한 툴로 사용되며 dependency graph에 대한 개념이 없습니다. Browsify는 비슷한 도구이지만 속도면에서 webpack이 더 우월합니다.
+- 질문에 대한 답으로 Grunt, Gulp는 오로지 리소스들에 대한 툴로 사용되며 dependency graph에 대한 개념이 없습니다.
+- Browsify는 비슷한 도구이지만 속도면에서 webpack이 더 우월합니다.
 
 ## 4. webpack 주요 기능
 webpack의 필요성을 아셨다면 본격적으로 webpack의 주요 기능들을 살펴 보겠습니다. 예제 코드를 보며 하나씩 살펴보도록 하겠습니다. webpack은 기본적으로 `webpack.config.js`파일에서 설정할 수 있습니다.
@@ -243,7 +244,7 @@ module.exports = config;
 
 ## 5. 끝으로...
 실무에서 webpack을 써보니 일단 작년까지 핫하던 Grunt나 Gulp를 충분히 대체시켜주는게 인상적이였습니다. 무엇보다 ES6를 도입시킬 수 있게 해주었고 watch기능을 통해 빠르고 편리한 개발환경을 제공해 주는 것이 저한테는 가장 큰 장점이였습니다.
-<br>다만, Spring 환경에서는 watch로 변경을 감지해도 바로바로 리소스가 업데이트되지 않는 점(저는 devtool을 사용해서 리소스 업로드에 있어 livereload를 가능하게 해주었습니다.)과 document문서가 빠르게 파악하고 사용하게끔 심플하게 구성되지 못한 점이 아쉬웠습니다.
+<br>다만, Spring 환경에서는 watch로 변경을 감지해도 바로바로 리소스가 업데이트되지 않는 점(저는 devtool을 사용해서 리소스 업로드에 있어 livereload를 가능하게 해주었습니다)과 document문서가 빠르게 파악하고 사용하게끔 심플하게 구성되지 못한 점이 아쉬웠습니다.
 <br>그래도 현재 이만한 bundling tool은 없다고 생각합니다. 다음에는 제가 적용한 coffee script 제거편을 써보도록 하겠습니다. 긴 글 읽어주셔서 감사합니다.
 
 `참조 URL`
