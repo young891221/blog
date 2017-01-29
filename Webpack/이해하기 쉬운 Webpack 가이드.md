@@ -26,7 +26,7 @@ webpack을 써야 하는 이유는 [webpack docs](http://webpack.github.io/docs/
 	- babel을 사용하여 ES6와 같이 브라우저에서 지원되지 않는 script code를 변환하여 사용할 수 있습니다.
 - 3rd-party library에 대해 모듈로 통합하는 기능을 제공합니다.
 - module bundler의 대부분의 기능을 사용자가 커스터마이징하여 사용할 수 있습니다.
-- 다양한 플로그인을 제공합니다.
+- 다양한 플러그인을 제공합니다.
 
 > **chunk**: chunk란 코드 혹은 모듈을 묶은 하나의 단위로 정의하였습니다. 
 
