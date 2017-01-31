@@ -245,9 +245,9 @@ module.exports = config;
 ## 5. 끝으로...
 실무에서 webpack을 써보니 일단 작년까지 핫하던 Grunt나 Gulp를 충분히 대체시켜주는게 인상적이였습니다. 무엇보다 ES6를 도입시킬 수 있게 해주었고 watch기능을 통해 빠르고 편리한 개발환경을 제공해 주는 것이 저한테는 가장 큰 장점이였습니다.
 <br>다만, Spring 환경에서는 watch로 변경을 감지해도 바로바로 리소스가 업데이트되지 않는 점(저는 devtool을 사용해서 리소스 업로드에 있어 livereload를 가능하게 해주었습니다)과 document문서가 빠르게 파악하고 사용하게끔 심플하게 구성되지 못한 점이 아쉬웠습니다.
-<br>그래도 현재 이만한 bundling tool은 없다고 생각합니다. 다음에는 제가 적용한 coffee script 제거편을 써보도록 하겠습니다. 긴 글 읽어주셔서 감사합니다.
+<br>그래도 현재 이만한 bundling tool은 없다고 생각합니다. 긴 글 읽어주셔서 감사합니다.
 
-`참조 URL`
+`참조 자료`
 - http://webpack.github.io/docs/
 - https://webpack.js.org/
 - https://github.com/webpack/docs/wiki/list-of-plugins
