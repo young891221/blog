@@ -38,7 +38,7 @@ Browsify, Grunt, Gulp 등의 도구들은 webpack과 무슨 차이가 있을까�
 - 질문에 대한 답으로 Grunt, Gulp는 오로지 리소스들에 대한 툴로 사용되며 dependency graph에 대한 개념이 없습니다.
 - Browsify는 비슷한 도구이지만 속도면에서 webpack이 더 우월합니다.
 
-## 4. webpack 주요 기능
+## 4. webpack config
 webpack의 필요성을 아셨다면 본격적으로 webpack의 주요 기능들을 살펴 보겠습니다. 예제 코드를 보며 하나씩 살펴보도록 하겠습니다. webpack은 기본적으로 `webpack.config.js`파일에서 설정할 수 있습니다.
 
 ### entry/output
