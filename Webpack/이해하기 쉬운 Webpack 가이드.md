@@ -1,6 +1,6 @@
 # 이해하기 쉬운 webpack 가이드
 연초 계획으로 실서비스 코드를 개선하는 역할을 맡게 되었습니다. 작년 세미나(JSCON, s67..기타)에서 강력하게 어필되어 써보고 싶었던 ES6 + Webpack 기반의 프론트 엔드 환경을 구성하기로 하였습니다. 그리하여 정리를 시작하게 되었고 
-제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 모든 자료는 [github](https://github.com/young891221/SpringBoot-Webpackhttps://github.com/young891221/SpringBoot-Webpack)에 있습니다. 
+제 입장에서 webpack이란 무엇이고 왜 사용해야 되며 어떠한 기능들이 있는지 알기쉽게 풀어쓰도록 노력하였습니다. 모든 자료는 [github](https://github.com/young891221/SpringBoot-Webpack)에 있습니다. 
 미숙한 부분은 가감없이 댓글 부탁드립니다.
 
 ## 1. webpack이란?
@@ -103,10 +103,11 @@ module.exports =  {
     ]
 }
 ```
+ > **File Loader**: 리소스 파일에 대한 config 설정을 해주는 loader이다. 이름, 크기, 경로 등을 구성할 수 있습니다.([file-loader](https://github.com/webpack-contrib/file-loader))
  
  
 ### plugins
-플러그인의 종류가 너무 많기에 예제로 쓰이는 기능들에 대해서만 간단하게 소개해 드립니다.
+[plugin list](https://github.com/webpack/docs/wiki/list-of-plugins)가 너무 많기에 예제로 쓰이는 기능들에 대해서만 소개해 드립니다. 
 
 ```javascript
 plugins: [
@@ -153,7 +154,7 @@ plugins: [
 - 여러 config파일들을 합쳐줍니다.
 
 `new webpack.WatchIgnorePlugin(paths)`
-- paths(정규식 or 경로)에 있는 리소스들은 watch시 제외됩니다.(유용할거 같아서 추가했습니다.) 
+- paths(정규식 or 경로)에 있는 리소스들은 watch시 제외됩니다. 
 
 ### 응용코드
 ```javascript
