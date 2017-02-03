@@ -103,7 +103,9 @@ module.exports =  {
     ]
 }
 ```
- > **File Loader**: 리소스 파일에 대한 config 설정을 해주는 loader이다. 이름, 크기, 경로 등을 구성할 수 있습니다.([file-loader](https://github.com/webpack-contrib/file-loader))
+> **File Loader**: 리소스 파일에 대한 config 설정을 해주는 loader이다. 이름, 크기, 경로 등을 구성할 수 있습니다.([file-loader](https://github.com/webpack-contrib/file-loader))
+
+> **css Import**: [css import](https://velopert.com/1555)하여 사용하는 방법은 velopert님이 잘 정리해 주셨습니다.
  
  
 ### plugins
