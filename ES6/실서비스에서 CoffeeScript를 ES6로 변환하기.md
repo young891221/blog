@@ -91,15 +91,12 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 
 <p align="center">
 <img src="/images/es6/coffee/before-directory.png"/>
-</p>
-
-`변환되기 이전 디렉토리 구조`
-
-<p align="center">
 <img src="/images/es6/coffee/after-directory.png"/>
 </p>
-
-`변환되기 이후 디렉토리 구조`
+<p align="center">
+<code>변환되기 이전 디렉토리 구조</code>
+<code>변환되기 이후 디렉토리 구조</code>
+</p>
 
 ES6로 변환하면서 문제가 되는 점들을 적어보았습니다.
 - 문제: mobile에서는 ES6 기능들이 다 될거라는 막연한 생각이였습니다. 하지만 대부분 지원되지 않는게 현실이었다는...(사실 크롬에서만 테스트를 수행하여 마지막에 IE11에서 다시 테스트를 해야 했습니다)
