@@ -70,14 +70,16 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <p align="center">
 <img src="/images/es6/coffee/before-code.png"/>
 </p>
-
-`변환되기 전 코드`
+<p align="center">
+<code>변환되기 전 코드</code>
+</p>
 
 <p align="center">
 <img src="/images/es6/coffee/sample-code.png"/>
 </p>
-
-`일반적으로 변환된 샘플 코드`
+<p align="center">
+<code>일반적으로 변환된 샘플 코드</code>
+</p>
 
 - 일단 바로 쓸 수 있는 코드로 변환되어 지지는 않습니다.
 - 변수의 선언은 const, let으로 이루어 집니다.
