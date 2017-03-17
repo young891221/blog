@@ -71,18 +71,18 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <img src="/images/es6/coffee/before-code.png"/>
 </p>
 <p align="center">
-<code>변환되기 전 코드</code>
+<code>변환되기 전 샘플 코드</code>
 </p>
 
 <p align="center">
 <img src="/images/es6/coffee/sample-code.png"/>
 </p>
 <p align="center">
-<code>일반적으로 변환된 샘플 코드</code>
+<code>일반적으로 변환된 샘플 코드(아직은 좀 코드가 더럽습니다..)</code>
 </p>
 
-- 일단 바로 쓸 수 있는 코드로 변환되어 지지는 않습니다.
-- 변수의 선언은 const, let으로 이루어 집니다.
+- 일단 바로 쓸 수 있는 코드로 변환되어 지지는 않습니다.(다듬는 과정이 필요합니다)
+- 변수의 선언은 const, let으로 이루어 집니다.(decaffeinate시 `--prefer-const`를 옵션으로 줍니다)
 - 규격에 어느정도 맞으면 class로 변환이 되지만 안되는 경우가 훨씬 많습니다.
 - for...of, Array함수 등 ES6의 함수들로 변환이 이루어 졌습니다.
 
@@ -94,17 +94,30 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <img src="/images/es6/coffee/after-directory.png"/>
 </p>
 <p align="center">
-<code>변환되기 이전 디렉토리 구조</code>
-<code>변환되기 이후 디렉토리 구조</code>
+<code>변환되기 이전(왼쪽)/이후(오른쪽) 디렉토리 구조</code>
 </p>
 
-ES6로 변환하면서 문제가 되는 점들을 적어보았습니다.
+<p align="center">
+<img src="/images/es6/coffee/code1.png"/>
+</p>
+<p align="center">
+<code>샘플 코드 정리 후</code>
+</p>
+
+#### ES6 코드 변환중 이슈
 - 문제: mobile에서는 ES6 기능들이 다 될거라는 막연한 생각이였습니다. 하지만 대부분 지원되지 않는게 현실이었다는...(사실 크롬에서만 테스트를 수행하여 마지막에 IE11에서 다시 테스트를 해야 했습니다)
+
 <p align="center">
 <img src="/images/es6/coffee/mobile-es6.png"/>
 </p>
-- 해결: Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE11 대상으로 테스트 하시면 편리합니다)
+
+>해결: Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE11 대상으로 테스트 하시면 편리합니다)<br>
+나중에 안 사실이지만 decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다.(나중에 찾은 슬픈 현실...ㅠㅠ) 더 자세한 옵션은 decaffeinate docs를 참고하세요.
 
 - 문제: 테스트 코드가 없어 공격적인 리펙토링이 어렵다.
 	- 해결: 해결하지 못하였습니다. 변명일 수도 있지만 모든 테스트 코드를 작성하는 것이 시간적으로 제약이 있었고 처음 시작부터 작성되지 않으면 추후의 반영은 힘들다고 생각합니다.
 
+### 5. Router 도입
+기존 코드에서는 모든 스크립트를 로드하지만 해당 코드의 앞부분에 url 검사 정규식을 넣어 코드의 실행여부를 결정지었습니다. Router의 도입은 필수적이였습니다.
+(@정규식 검증 코드)
+(@Router 도입)
