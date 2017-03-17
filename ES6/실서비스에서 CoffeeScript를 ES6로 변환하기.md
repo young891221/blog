@@ -113,7 +113,8 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 나중에 안 사실이지만 decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다.(나중에 찾은 슬픈 현실...ㅠㅠ) 더 자세한 옵션은 decaffeinate docs를 참고하세요.
 
 `나머지 정리 포인트`
-- set 메서드는 정말 필요한 경우가 아니면 제외했습니다. 객체 인스턴스화시 초기화되어 필요없기 때문입니다. 
+- set 메서드는 정말 필요한 경우가 아니면 제외했습니다. 객체 인스턴스화시 초기화되어 필요없기 때문입니다.
+- 상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 상수를 선언하는 것이 아닌 리바인딩을 막는 선언자입니다)
 - ES6 class 사용시 private 변수 선언이 힘듭니다.
 	- 대안은 여러가지가 있지만 [장단점](http://webcache.googleusercontent.com/search?q=cache:NeFjoJ7ey4wJ:www.2ality.com/2016/01/private-data-classes.html+&cd=1&hl=ko&ct=clnk&gl=kr)이 있습니다.
 	- Object.assign을 사용하면 constructor 안에서 선언할 수 있지만 메소드에 인스턴스를 직접 할당하므로 각 인스턴스들의 독립성이 보장되지 않아 class 사용의미가 없어집니다.
