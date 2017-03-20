@@ -96,13 +96,6 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <code>변환되기 이전/이후 디렉토리 구조</code>
 </p>
 
-<p align="center">
-<img src="/images/es6/coffee/code1.png"/>
-</p>
-<p align="center">
-<code>정리 후 심플해진 샘플 코드</code>
-</p>
-
 ### 5. ES6 아름답게 구성하기(이슈 해결)
 문제는 mobile에서 ES6 기능들이 다 될것이라는 막연한 추측이였습니다. 하지만 대부분 지원되지 않는게 현실이었다는...[이곳](https://kangax.github.io/compat-table/es6/)에서 확인 가능합니다.
 
@@ -110,12 +103,14 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <img src="/images/es6/coffee/mobile-es6.png"/>
 </p>
 
-1)ES6 함수를 decaffeinate로 사전에 차단하기<br>
+***1)ES6 함수를 decaffeinate로 사전에 차단하기***
+<br>
 처음에는 decaffeinate의 옵션을 따로 보지 않고 컨버팅작업만 해서 몰랐습니다...(opensource 사용전 docs를 빠르게 스케닝하는것도 습관화가 필요하다는 것을 깨달았습니다)
 >Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE 대상으로 테스트 하시면 편리합니다)<br>
 decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다. 더 자세한 옵션은 decaffeinate docs를 참고하세요.
 
-2)저는 기왕하는거 ES6의 기능들을 사용하고 싶은데요?<br>
+***2)저는 기왕하는거 ES6의 기능들을 사용하고 싶은데요?***
+<br>
 저같이 ES6기능을 사용하고 싶은 분들을 위해 babel에서 [Polyfill](https://babeljs.io/docs/usage/polyfill)을 지원해 줍니다. 아래와 같이 설치 후 webpack의 entry에 전역으로 설정해 주면 모든 ES6함수를 IE8까지 지원해 줍니다.(놀랍죠?)
 ```npm
 npm install --save babel-polyfill
@@ -127,7 +122,8 @@ npm install --save babel-polyfill
 <code>webpack에 Polyfill 적용</code>
 </p>
 
-3)Polyfill 좋은데 용량이 너무 큰데요?<br>
+***3)Polyfill 좋은데 용량이 너무 큰데요?***
+<br>
 Polyfill을 적용하고 기분좋게 사용하고 있는데 다른 모든 함수를 require시키다 보니 용량이 어마어마하였습니다.
 <p align="center">
 <img src="/images/es6/coffee/after-polyfill.png"/>
@@ -154,20 +150,30 @@ npm install --save core-js
 <code>core-js 적용 이후 약 46KB 절약</code>
 </p>
 
-4)set 메서드는 정말 필요한 경우가 아니면 제외했습니다. 객체 인스턴스화시 초기화되어 필요없기 때문입니다.<br>
+***4)set 메서드는 정말 필요한 경우가 아니면 제외했습니다. 객체 인스턴스화시 초기화되어 필요없기 때문입니다.***
+<br>
 
-5)상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 상수를 선언하는 것이 아닌 리바인딩을 막는 선언자입니다)<br>
+***5)상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 상수를 선언하는 것이 아닌 리바인딩을 막는 선언자입니다)***
+<br>
 
-6)ES6 class 사용시 private 변수 선언이 힘듭니다.
+<p align="center">
+<img src="/images/es6/coffee/code1.png"/>
+</p>
+<p align="center">
+<code>Object.freeze 적용(점점 심플해져 가는 코드)</code>
+</p>
+
+
+***6)ES6 class 사용시 private 변수 선언이 힘듭니다.***
 	- 대안은 여러가지가 있지만 [장단점](http://webcache.googleusercontent.com/search?q=cache:NeFjoJ7ey4wJ:www.2ality.com/2016/01/private-data-classes.html+&cd=1&hl=ko&ct=clnk&gl=kr)이 있습니다.
 	- Object.assign을 사용하면 constructor 안에서 선언할 수 있지만 메소드에 인스턴스를 직접 할당하므로 각 인스턴스들의 독립성이 보장되지 않아 class 사용의미가 없어집니다.
 	- Symbols, WeakMap 등을 사용하면 어느정도 해결되는 것 같지만 class 구조가 ugly해 지고 다른 스크립트에서 name이 같은 코드끼리 충돌이 생깁니다.
 	- 저는 깔끔한 코드스타일을 선호하기에 [stackoberflow](http://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes)에서 찾은 naming rule을 지정방법을 선택하였습니다.(underscore를 private 구분자로 정하여 사용하였습니다.)
 
-6)이미 남발되어 있는 전역객체들이 너무 많았습니다. 충격적인 것은 window 객체에 지정하여 전역으로 사용되어 진다는 것이...decaffeinate의 잘못이 아니라 코드자체가 문제였습니다.
+***6)이미 남발되어 있는 전역객체들이 너무 많았습니다. 충격적인 것은 window 객체에 지정하여 전역으로 사용되어 진다는 것이...decaffeinate의 잘못이 아니라 코드자체가 문제였습니다.***
 	- 공통 object를 관리하는 commonObject를 생성하여 전역으로 사용되어 지는 객체들을 관리하게끔 하였습니다.
 
-7)스크립트 별 실행 여부를 결정짓는 url 체크 정규표현식들이 사용되어 코드가 지저분하였습니다. 해당 이슈는 다음 카테고리에서 해결됩니다.
+***7)스크립트 별 실행 여부를 결정짓는 url 체크 정규표현식들이 사용되어 코드가 지저분하였습니다. 해당 이슈는 다음 카테고리에서 해결됩니다.***
 
 ### 5. Router 도입
 각 스크립트에서 아래 코드처럼 상단에 정규식을 넣어 url에 따라 코드의 실행여부를 결정지었습니다. 때문에 Router의 도입은 필수적이였습니다.
