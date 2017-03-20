@@ -105,13 +105,13 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 
 ***1)ES6 함수를 decaffeinate로 사전에 차단하기***
 <br>
-처음에는 decaffeinate의 옵션을 따로 보지 않고 컨버팅작업만 해서 몰랐습니다...(opensource 사용전 docs를 빠르게 스케닝하는것도 습관화가 필요하다는 것을 깨달았습니다)
+처음에 decaffeinate docs의 option을 제대로 보지 않았습니다.(opensource 사용전 docs를 빠르게 스케닝하는 습관화가 필요합니다...ㅠㅠ)
 >Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE 대상으로 테스트 하시면 편리합니다)<br>
 decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다. 더 자세한 옵션은 decaffeinate docs를 참고하세요.
 
 ***2)저는 기왕하는거 ES6의 기능들을 사용하고 싶은데요?***
 <br>
-저같이 ES6기능을 사용하고 싶은 분들을 위해 babel에서 [Polyfill](https://babeljs.io/docs/usage/polyfill)을 지원해 줍니다. 아래와 같이 설치 후 webpack의 entry에 전역으로 설정해 주면 모든 ES6함수를 IE8까지 지원해 줍니다.(놀랍죠?)
+저같이 ES6기능을 사용하고 싶은 분들을 위해 babel에서 [Polyfill](https://babeljs.io/docs/usage/polyfill)을 지원해 줍니다. 아래와 같이 설치 후 webpack의 entry에 전역으로 설정해 주면 모든 ES6함수를 IE8까지 지원해 줍니다.
 ```npm
 npm install --save babel-polyfill
 ```
@@ -119,20 +119,21 @@ npm install --save babel-polyfill
 <img src="/images/es6/coffee/webpack-polyfill.png"/>
 </p>
 <p align="center">
-<code>webpack에 Polyfill 적용</code>
+<code>webpack entry에 Polyfill 적용</code>
 </p>
 
 ***3)Polyfill 좋은데 용량이 너무 큰데요?***
 <br>
-Polyfill을 적용하고 기분좋게 사용하고 있는데 다른 모든 함수를 require시키다 보니 용량이 어마어마하였습니다.
+Polyfill을 적용하여 기분좋게 사용하고 있는데 ES6 모든 기능을 require시키다 보니 용량이 어마어마하였습니다.
 <p align="center">
 <img src="/images/es6/coffee/after-polyfill.png"/>
 </p>
 <p align="center">
-<code>Polyfill 적용 이후 bundle.js 용량</code>
+<code>Polyfill 적용 이후 bundle.js 용량(이전에는 반정도 였다는...)</code>
 </p>
 
-좀 찾아보니 여러가지 webpack polyfills plugin도 있고 하였지만 [core-js](https://github.com/zloirock/core-js)가 가장 좋았습니다. 일단 문서화가 잘 되어 있고 ES6 기능이 아주 잘 지원되었습니다.
+제가 사용하는 기능들만 따로 require 시켜서 사용하고 싶었습니다. 좀 찾아보니 여러가지 방법이 있었습니다. 
+webpack polyfills plugin도 있고 하였지만 [core-js](https://github.com/zloirock/core-js)가 가장 좋았습니다. 일단 문서화가 잘 되어 있고 ES6 기능이 아주 잘 지원되었습니다.
 ```npm
 npm install --save core-js
 ```
@@ -147,11 +148,13 @@ npm install --save core-js
 <img src="/images/es6/coffee/after-corejs.png"/>
 </p>
 <p align="center">
-<code>core-js 적용 이후 약 46KB 절약</code>
+<code>core-js 적용 이후 약 46KB 절약(다시 반으로 뚝!)</code>
 </p>
 
-***4)set 메서드는 정말 필요한 경우가 아니면 제외했습니다. 객체 인스턴스화시 초기화되어 필요없기 때문입니다.***
-<br>
+***4)set 메서드는 정말 필요한 경우가 아니면 제외했습니다.***
+
+- 대부분 객체 인스턴스화시 초기화되어 필요없기 때문입니다.(의존성 제거를 위해!)
+- getter/setter의 경우 Object.defineProperty를 사용하는데 IE8에서는 DOM Object에서만 사용하게끔 규정합니다.(알아두세요~)
 
 ***5)상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 상수를 선언하는 것이 아닌 리바인딩을 막는 선언자입니다)***
 <br>
@@ -165,13 +168,15 @@ npm install --save core-js
 
 
 ***6)ES6 class 사용시 private 변수 선언이 힘듭니다.***
-	- 대안은 여러가지가 있지만 [장단점](http://webcache.googleusercontent.com/search?q=cache:NeFjoJ7ey4wJ:www.2ality.com/2016/01/private-data-classes.html+&cd=1&hl=ko&ct=clnk&gl=kr)이 있습니다.
-	- Object.assign을 사용하면 constructor 안에서 선언할 수 있지만 메소드에 인스턴스를 직접 할당하므로 각 인스턴스들의 독립성이 보장되지 않아 class 사용의미가 없어집니다.
-	- Symbols, WeakMap 등을 사용하면 어느정도 해결되는 것 같지만 class 구조가 ugly해 지고 다른 스크립트에서 name이 같은 코드끼리 충돌이 생깁니다.
-	- 저는 깔끔한 코드스타일을 선호하기에 [stackoberflow](http://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes)에서 찾은 naming rule을 지정방법을 선택하였습니다.(underscore를 private 구분자로 정하여 사용하였습니다.)
+
+- 대안은 여러가지가 있지만 [장단점](http://webcache.googleusercontent.com/search?q=cache:NeFjoJ7ey4wJ:www.2ality.com/2016/01/private-data-classes.html+&cd=1&hl=ko&ct=clnk&gl=kr)이 있습니다.
+- Object.assign을 사용하면 constructor 안에서 선언할 수 있지만 메소드에 인스턴스를 직접 할당하므로 각 인스턴스들의 독립성이 보장되지 않아 class 사용의미가 없어집니다.
+- Symbols, WeakMap 등을 사용하면 어느정도 해결되는 것 같지만 class 구조가 ugly해 지고 다른 스크립트에서 name이 같은 코드끼리 충돌이 생깁니다.
+- 저는 깔끔한 코드스타일을 선호하기에 [stackoberflow](http://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes)에서 찾은 naming rule을 지정방법을 선택하였습니다.(underscore를 private 구분자로 정하여 사용하였습니다.)
 
 ***6)이미 남발되어 있는 전역객체들이 너무 많았습니다. 충격적인 것은 window 객체에 지정하여 전역으로 사용되어 진다는 것이...decaffeinate의 잘못이 아니라 코드자체가 문제였습니다.***
-	- 공통 object를 관리하는 commonObject를 생성하여 전역으로 사용되어 지는 객체들을 관리하게끔 하였습니다.
+
+- 공통 object를 관리하는 commonObject를 생성하여 전역으로 사용되어 지는 객체들을 관리하게끔 하였습니다.
 
 ***7)스크립트 별 실행 여부를 결정짓는 url 체크 정규표현식들이 사용되어 코드가 지저분하였습니다. 해당 이슈는 다음 카테고리에서 해결됩니다.***
 
@@ -199,4 +204,6 @@ React-Router같은 라이브러리를 쓰고 싶었지만...React까지 도입�
 - 대부분 그러하시겠지만 테스트 코드가 없으면 처음에 개발하기에 편할지 몰라도 이후의 유지보수 관점에서 절약한 시간의 배로 시간이 더 걸리는 것 같습니다. 물론 저희가 프론트와 백엔드를 다하기 때문에 현실적인 문제도 컸던것 같습니다.(변명입니다...ㅠㅠ)
 - 그래도 하나에 통합되거나 얽히고 설혀있던 의존성들을 제거한 것에 이번 작업의 의의가 있는것 같습니다. 
 - 요즘 패러다임 자체가 간결한 소스와 그 역할에 따른 모듈화인데 ES6는 이를 이뤄주는데 최고의 효율을 보여주었습니다.
-- 앞으로 Coffee를 모르는 개발자가 오더라도 더 빠른 퍼포먼스를 보여줄 수 있다는 것이 이번 변환작업의 가장 큰 의미인것 같습니다. 긴 글 읽어주셔서 감사합니다.
+- 앞으로 Coffee를 모르는 개발자가 오더라도 더 빠른 퍼포먼스를 보여줄 수 있다는 것이 이번 변환작업의 가장 큰 의미인것 같습니다. 
+
+>긴 글 읽어주셔서 감사합니다.
