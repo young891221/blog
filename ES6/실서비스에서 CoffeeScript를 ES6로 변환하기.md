@@ -29,44 +29,111 @@
 - 향후 React나 다른 프레임워크를 도입하기 수월합니다.
 - 이후에 브라우저들이 ES6를 지원해 주는 날이 온다면 그때는 원본소스 그대로 배포하면 됩니다.
 
-## 도입 절차
-1)각각의 스크립트 구조와 역할에 대해 분석<br>
-2)의존관계를 형성하여 모듈화된 구조 설계<br>
-3)Webpack 도입을 위한 스터디 진행 및 기존 프로젝트에 필요한 Webpack의 기능 분석<br>
-4)CoffeeScript를 ES6로 변환(decaffeenate를 사용하면 짱 편합니다)<br>
-5)변환된 스크립트 아름답게 구성(convention, modulization)<br>
-6)Router 도입
+기술 스펙
+- babel, etc 6.24.0
+- core-js 2.4.1
+- eslint 3.13.1
+- webpack, etc 1.14.0
+- grunt 0.4.0
+- decaffeinate 2.50.39
 
-### 1. 기존 스크립트 설계하기
-- 사실 모바일웹 프로젝트의 프론트 부분을 개발한 적이 거의 없어 해당 스크립트들이 어떠한 기능을 하는지 부터 파악해야 했습니다.
- 
+## 도입 절차
+
+### 1. 기존 스크립트 구조와 역할 분석
 <p align="center">
 <img src="/images/es6/coffee/explain-feature.png"/>
 </p>
-
-- 각각의 주요 기능들을 파악한 이후 스크립트들의 구조를 파악하였습니다. 공통되는 모듈과 카테고리별 주요 스크립트를 정리하였습니다. 
+<p align="center">
+<code>각각의 스크립트들의 기능 파악</code>
+</p>
 
 <p align="center">
 <img src="/images/es6/coffee/neo-structure.png"/>
 </p>
+<p align="center">
+<code>스크립트들의 구조 정리/공통 모듈은 따로 분리</code>
+</p>
  
-- 마지막으로 스크립트들의 의존관계를 정의하였습니다.
-
 <p align="center">
 <img src="/images/es6/coffee/neo-dependency.png"/>
 </p>
+<p align="center">
+<code>스크립트들의 의존관계 정리</code>
+</p>
 
 ### 2. Webpack 도입하기
-Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하였습니다. 자세한 내용은 [개인 블로그](http://haviyj.tistory.com/17)에 정리해 두었습니다.(도입 이후 3일만에 Webpack2가 나와 많이 당황스러웠던 기억이...)
+기존에는 grunt를 통해 jst(template), 기타 task를 처리해 주고 있었습니다. 원래 Webpack만으로 모든 task를 처리해 줄 수 있지만 jst 의존성을 React 도입 이전에 제거할 수가 없어 Webpack과 grunt를 병행하여 사용하였습니다. 
+아래는 사용했던 module과 plugin입니다.
+```javascript
+//...
+
+const common = {
+	//...
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loader: 'babel',
+                exclude: /(node_modules|bower_components)/,
+                query: {
+                    presets: ['es2015']
+                }
+            },
+            {
+                test: /\.(css|scss)$/,
+                loader: ExtractTextPlugin.extract({
+                    fallbackLoader: "style-loader",
+                    loader: "css-loader!postcss-loader!sass-loader"
+                })
+            },
+            {
+                test: /\.(gif|png|jpg)$/,
+                loader: 'file-loader?name=images/[name].[ext]&mimeType=image/[ext]&limit=100000'
+            }
+        ]
+    },
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new CommonsChunkPlugin({
+            name: "common",
+            filename: "common.js",
+            minChunks: Infinity
+        })
+    ]
+}
+
+const prodConfig = {
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {warnings: false}
+        }),
+        new ExtractTextPlugin("[name].css")
+    ]
+}
+
+var config;
+if(target === 'watch') {
+    console.log('watch build');
+    config = common;
+} else {
+    console.log('real build');
+    config = webpackMerge(common, prodConfig);
+}
+
+module.exports = config;
+```
+
+>Webpack에 대한 더 자세한 내용은 [개인 블로그](http://haviyj.tistory.com/17)에 정리해 두었습니다.
 
 ### 3. CoffeeScript 걷어내기
-사내 동료 직원에게 좋은 OpenSource를 추천받았습니다. 이름부터 필이 팍팍 오는 decaffeinate! 몸에 해로운 카페인을 제거하자는 느낌이 물씬나며 저에게 격공되는 멘트를 메인에 달고 있습니다.
+사내 동료 직원에게 좋은 OpenSource를 추천받았습니다. 이름부터 필이 팍 꽂히는 **decaffeinate!** 아래는 decaffeinate의 메인 멘트입니다.
 
 <p align="center">
 <img src="/images/es6/coffee/decaffeinate-comment.png"/>
 </p>
 
-[decaffeinate](https://www.npmjs.com/package/decaffeinate)를 사용하면 간편하게 CoffeeScript를 ES6로 변환해 줍니다. 기대했던 것보다 퀄러티 좋게 변환이 되어 놀랐습니다!(물론 완벽하진 않습니다...)
+[decaffeinate](https://www.npmjs.com/package/decaffeinate)를 사용하면 간편하게 CoffeeScript를 ES6로 변환해 줍니다. 기대했던 것보다 퀄러티 좋게 변환이 되어 놀랐습니다!
 
 <p align="center">
 <img src="/images/es6/coffee/before-code.png"/>
@@ -88,7 +155,7 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 - for...of, Array함수 등 ES6의 함수들로 변환이 이루어 졌습니다.
 
 ### 4. ES6 directory 구조잡기
-여기서부터 가장 오랜 시간 공을 들였습니다. 제일 먼저 디렉토리 구조를 각각 의미에 맞는 구조로 정리하였습니다. 또한 미흡하게 변환되어진 코드를 모듈화하고 누구나 한눈에 파악할 수 있도록 정형화된 구조로 변형하도록 노력하였습니다.
+여기서부터 가장 오랜 시간 공을 들였습니다. 제일 먼저 디렉토리 구조를 각각 의미에 맞는 구조로 정리하였습니다. 미흡하게 변환된 코드를 모듈화하고 한눈에 파악할 수 있는 구조가 되도록 노력하였습니다.
 
 <p align="center">
 <img src="/images/es6/coffee/before-directory.png"/>
@@ -98,7 +165,7 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 <code>변환되기 이전/이후 디렉토리 구조</code>
 </p>
 
-### 5. ES6 아름답게 구성하기(이슈 해결)
+### 5. ES6 아름답게 구성하기(이슈 해결 방법)
 문제는 mobile에서 ES6 기능들이 다 될것이라는 막연한 추측이였습니다. 하지만 대부분 지원되지 않는게 현실이었다는...[이곳](https://kangax.github.io/compat-table/es6/)에서 확인 가능합니다.
 
 <p align="center">
@@ -107,7 +174,7 @@ Webpack에 대한 개념과 기능들은 개인적인 학습을 통해 도입하
 
 ***1)ES6 함수를 decaffeinate로 사전에 차단하기***
 <br>
-처음에 decaffeinate docs의 option을 제대로 보지 않았습니다.(opensource 사용전 docs를 빠르게 스케닝하는 습관화가 필요합니다...ㅠㅠ)
+처음에 decaffeinate docs의 option을 제대로 보지 않았습니다. 저는 대충 훑고 넘어가서 삽질을...opensource 사용전 docs를 빠르게 스케닝하는 습관을 들여야 겠습니다.
 - Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE 대상으로 테스트 하시면 편리합니다)
 - decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다. 더 자세한 옵션은 [decaffeinate docs](https://www.npmjs.com/package/decaffeinate)를 참고하세요.
 
@@ -124,14 +191,14 @@ npm install --save babel-polyfill
 <code>webpack entry에 Polyfill 적용</code>
 </p>
 
-***3)Polyfill 좋은데 용량이 너무 큰데요?***
+***3)Polyfill 좋은데 size가 너무 큰데요?***
 <br>
-Polyfill을 적용하여 기분좋게 사용하고 있는데 ES6 모든 기능을 require시키다 보니 용량이 어마어마하였습니다.
+Polyfill을 적용하여 기분좋게 사용하고 있는데 ES6 모든 기능을 require시키다 보니 size가 어마어마하였습니다.
 <p align="center">
 <img src="/images/es6/coffee/after-polyfill.png"/>
 </p>
 <p align="center">
-<code>Polyfill 적용 이후 bundle.js 용량(이전에는 반정도 였다는...)</code>
+<code>Polyfill 적용 이후 bundle.js size(이전에는 반정도 였다는...)</code>
 </p>
 
 제가 사용하는 기능들만 따로 require 시켜서 사용하고 싶었습니다. 좀 찾아보니 여러가지 방법이 있었습니다. 
@@ -143,24 +210,24 @@ npm install --save core-js
 <img src="/images/es6/coffee/webpack-corejs.png"/>
 </p>
 <p align="center">
-<code>여러 방식이 있지만 전역에서 사용하도록 entry에 적용</code>
+<code>이런식으로 entry에 적용(이보다는 더 깔끔하게 분리시키는게 좋겠죠?)</code>
 </p>
 
 <p align="center">
 <img src="/images/es6/coffee/after-corejs.png"/>
 </p>
 <p align="center">
-<code>core-js 적용 이후 약 46KB 절약(다시 반으로 뚝!)</code>
+<code>core-js 적용 이후 약 46KB 절약(다시 절반으로 뚝!)</code>
 </p>
 
->소를 위해 대를 희생한다면 이만큼 바보같은 짓은 없을겁니다. 쓸데없는 의존성을 죽입시다!([kill your dependencis](http://www.mikeperham.com/2016/02/09/kill-your-dependencies))
+>소를 위해 대를 희생한다면 이보다 바보같은 짓은 없을겁니다. 쓸데없는 의존성을 죽입시다!([Kill Your Dependencies](http://www.mikeperham.com/2016/02/09/kill-your-dependencies))
 
 ***4)set 메서드는 정말 필요한 경우가 아니면 제외했습니다.***
 
 - 대부분 객체 인스턴스화시 초기화되어 필요없기 때문입니다.(의존성 제거를 위해!)
-- getter/setter의 경우 Object.defineProperty를 사용하는데 IE8에서는 DOM Object에서만 사용하게끔 규정합니다.(혹시 IE를 한다면...)
+- getter/setter의 경우 Object.defineProperty를 사용하는데 IE8에서는 DOM Object에서만 사용하게끔 규정합니다.(혹시 IE환경을 지원한다면 참고하세요)
 
-***5)상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 상수를 선언하는 것이 아닌 리바인딩을 막는 선언자입니다)***
+***5)상수로 선언되는 값들은 Object.freeze를 사용하여 선언하였습니다.(const는 완벽한 상수선언이 아닌 리바인딩을 막는 선언자입니다)***
 <br>
 
 <p align="center">
@@ -203,11 +270,11 @@ React-Router같은 라이브러리를 쓰고 싶었지만...React까지 도입�
 <code>모듈화된 Router와 entry point에서 각각의 스크립트 실행여부를 결정짓는 코드</code>
 </p>
 
-### 후기
+### 마무리
 - 아쉬운 점이 많습니다. 로직의 세부적인 개선이 미미하였습니다. 이유는 **테스트 코드가 없다는 것**. 그래서 공격적인 리펙토링이 어려웠습니다. 
 - 대부분 그러하시겠지만 테스트 코드가 없으면 처음에 개발하기에 편할지 몰라도 이후의 **유지보수 관점에서 절약한 시간의 배로 시간이 더 걸리는 것** 같습니다. 물론 저희가 프론트와 백엔드를 다하기 때문에 현실적인 문제도 컸던것 같습니다.(변명입니다...ㅠㅠ)
 - 그래도 **하나에 통합되거나 얽히고 설혀있던 의존성들을 제거한 것**에 이번 작업의 의의가 있는것 같습니다. 
 - 요즘 패러다임 자체가 간결한 소스와 그 역할에 따른 모듈화인데 **ES6는 이를 구현하는데 최고의 효율**을 보여주었습니다.
 - 앞으로 Coffee를 모르는 개발자가 오더라도 더 빠른 퍼포먼스를 보여줄 수 있다는 것이 이번 변환작업의 가장 큰 의미인것 같습니다. 
 
->긴 글 읽어주셔서 감사합니다.
+>앞으로도 게을리 하지 않고 코드을 더 깔끔하게, 읽기 쉽게 작성하도록 노력하겠습니다. 여건이 된다면 React를 도입하여 router, template, test, flux 아키텍처의 장점을 사용하고 싶습니다.(여건이 되야 됩니다...) 긴 글 읽어주셔서 감사합니다!
