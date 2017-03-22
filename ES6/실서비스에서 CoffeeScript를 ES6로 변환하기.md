@@ -103,7 +103,7 @@ const common = {
             minChunks: Infinity
         })
     ]
-}
+};
 
 const prodConfig = {
     plugins: [
@@ -112,9 +112,9 @@ const prodConfig = {
         }),
         new ExtractTextPlugin("[name].css")
     ]
-}
+};
 
-var config;
+let config;
 if(target === 'watch') {
     console.log('watch build');
     config = common;
