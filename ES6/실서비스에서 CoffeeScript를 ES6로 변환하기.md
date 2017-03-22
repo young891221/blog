@@ -178,7 +178,7 @@ module.exports = config;
 <br>
 처음에 decaffeinate docs의 option을 제대로 보지 않았습니다. 저는 대충 훑고 넘어가서 삽질을...opensource 사용전 docs를 빠르게 스케닝하는 습관을 들여야 겠습니다.
 - Array.from, includes, generator, promise...기타 등 지원 안되는 ES6 함수들 제거(대부분 IE 대상으로 테스트 하시면 편리합니다)
-- decaffeinate의 option 중 '--loose-for-expressions', '--loose-for-of', '--loose-includes' 등을 부여해 주면 됩니다. 더 자세한 옵션은 [decaffeinate docs](https://www.npmjs.com/package/decaffeinate)를 참고하세요.
+- decaffeinate의 option 중 `--loose-for-expressions`, `--loose-for-of`, `--loose-includes` 등을 부여해 주면 됩니다. 더 자세한 옵션은 [decaffeinate docs](https://www.npmjs.com/package/decaffeinate)를 참고하세요.
 
 ***2)저는 기왕하는거 ES6의 기능들을 사용하고 싶은데요?***
 <br>
