@@ -94,12 +94,15 @@ Spring Boot Run
 <p align="center">
 <img src="/images/Webpack/webpack-dev-server/start.png"/>
 </p>
+<p align="center">
+<code>npm start 실행<code>
+</p>
 
 <p align="center">
 <img src="/images/Webpack/webpack-dev-server/result.gif"/>
 </p>
 <p align="center">
-<code>npm start 실행</code>
+<code>결과 화면</code>
 </p>
 
 ## 3. 삽질해소에 도움이 되었던 참조 사이트
