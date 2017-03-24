@@ -1,7 +1,8 @@
 # Spring Boot 환경에서 webpack dev server 사용하기
-Spring Boot에서 Webpack을 사용하며 script 개발시 `webpack --watch`를 사용하여 디버깅하였습니다. Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading이 가능하였지만 `watch`기능이 bundle를 아에 새것으로 바꿔주는 형식이라 
-실시간으로 변경을 감지하지 못하였고 그에 따라 디버깅이 굉장히 불편했습니다. 
-프론트 개발시에도 실시간 디버깅을 위해 `webpack-dev-server`를 사용하였고 이제는 F5를 손에서 떼버리게 되었습니다.(부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 아래는 이에 관한 설정내용입니다.
+Spring Boot에서 Webpack을 사용하며 script 개발시 `webpack --watch`를 사용하여 디버깅하였습니다. 
+Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading이 가능하였지만 `watch`기능이 bundle를 아에 새것으로 바꿔주는 형식이라 실시간으로 변경을 감지하지 못하였고 그에 따라 디버깅이 굉장히 불편했습니다. 
+프론트 개발시에도 실시간 디버깅을 위해 `webpack-dev-server`를 사용하였고 이제는 F5를 손에서 떼버리게 되었습니다.
+(부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 모든 코드는 [github](https://github.com/young891221/blog/blob/master/Webpack/Spring%20Boot%20%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%20Webpack%20dev%20server%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.md)에 있으며 아래는 이에 관한 설정내용입니다.
 
 >Spring Boot에서 백엔드와 프론트를 분리하여 따로 서버를 구성하는 [심플한 영어자료](http://justincalleja.com/2016/04/17/serving-a-webpack-bundle-in-spring-boot/)가 있습니다. 저의 환경은 서버 템플릿(freemarker)를 주로 사용하기 때문에 따로 분리는 하지 않고 하나의 프로젝트로 개발하였습니다.
 
@@ -16,6 +17,22 @@ npm install webpack-dev-server --save-dev
 ```html
 <script type="text/javascript" src="bundle.js"></script>
 ```
+
+### paskage.json script 설정
+```javascript
+{
+    ...
+	"scripts": {
+	    "start": "webpack-dev-server --progress --inline",
+	    "watch": "webpack -d --watch",
+	    "dev": "webpack -d",
+	    "prod": "webpack -p",
+	    "test": "echo \"Error: no test specified\" && exit 1"
+	  }
+  ...
+}
+```
+
 ### webpack.config.js에 추가 / 혹은 webpack.dev.config.js를 따로 두어 로컬개발시에만 적용 
 ```javascript
 module.exports = {
@@ -38,7 +55,7 @@ module.exports = {
 
 ### devtool option
 디버깅을 위한 source mapping style을 선택할 수 있습니다. 변환되기 전, 변환된 호 혹은 각각의 성능에 따라 devtool option을 선택할 수 있습니다.
->자세한 설명과 성능은 [devtool docs](https://webpack.js.org/configuration/devtool)를 찾고하세요. 저에게 도움이 되었던 [양권성님의 블로그](https://perfectacle.github.io/2016/11/14/Webpack-devtool-option-Performance/)도 참고하시면 이해하시는데 더 좋습니다.
+>자세한 설명과 성능은 [devtool docs](https://webpack.js.org/configuration/devtool)를 찾고하세요. 저에게 도움이 되었던 [양권성님의 블로그](https://perfectacle.github.io/2016/11/14/Webpack-devtool-option-Performance/)도 참고하시면 이해하기 더 쉽습니다.
 
 
 ### devServer option
@@ -57,9 +74,17 @@ module.exports = {
     publicPath: "http://localhost:3000/static/bundle.js"
     ```
 - host: 디폴트는 `localhost`. 만약 외부의 다른 host를 잡고 싶다면 `0.0.0.0`.
-- **proxy**: proxying하기 원하는 URL을 설정해 줄 수 있습니다. 현재 백엔드에서 돌고 있는 경로를 설정해 주었습니다. 자세한 설명은 [여기](https://webpack.js.org/configuration/dev-server/#devserver-proxy)를 참고하세요.
+- **proxy**: proxying하기 원하는 URL을 설정해 줄 수 있습니다. 현재 백엔드 서버 호스트를 설정해 주었습니다. 자세한 설명은 [여기](https://webpack.js.org/configuration/dev-server/#devserver-proxy)를 참고하세요.
 
 >`webpack-dev-server`는 중요한 옵션들을 CLI를 사용하여 설정할 수 있습니다. 설정이 유연하게 제공되어 자칫 충돌을 일으킬 수 있습니다.(저 또한 HMR설정에 삽질을 많이 했습니다...) CLI설정은 [여기](http://webpack.github.io/docs/webpack-dev-server.html#webpack-dev-server-cli)를 참고하세요.
 
+###HMR(Hot Module Replacement)
+`webpack-dev-server`의 또 하나의 장점인 HMR은 특정 모듈의 변화를 감지하여 변경된 부분만 페이지 reload 없이 빠르게 변경해 줍니다. HMR은 **HMR을 구현하는 'loaders'에서만 작동**됩니다.('react-hot-loader', 'style-loader' etc) 
+설정방식이 다양하기 때문에 본인에게 맞는 것, 그리고 되는 것으로 취사선택하시면 됩니다. react-hot-loader 방식은 [여기](https://webpack.js.org/guides/hmr-react)를 참조하시면 빠르게 세팅가능합니다.
 
-
+<p align="center">
+<img src="/images/Webpack/webpack-dev-server/result.gif"/>
+</p>
+<p align="center">
+<code>결과 화면</code>
+</p>
