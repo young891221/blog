@@ -3,7 +3,7 @@ Spring Boot에서 Webpack을 사용하며 script 개발시 `webpack --watch`를 
 Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading이 가능하였지만 `watch`기능이 bundle를 아에 새것으로 바꿔주는 형식이라 실시간으로 변경을 감지하지 못하였고 그에 따라 디버깅이 굉장히 불편했습니다.
 <br>
 프론트 개발시에도 실시간 디버깅을 위해 `webpack-dev-server`를 사용하였고 이제는 F5를 손에서 떼버리게 되었습니다.
-(부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 모든 코드는 [github](https://github.com/young891221/blog/blob/master/Webpack/Spring%20Boot%20%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%20Webpack%20dev%20server%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.md)에 있으며 아래는 이에 관한 설정내용입니다.
+(부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 모든 코드는 [github](https://github.com/young891221/SpringBoot-Webpack)에 있으며 아래는 이에 관한 설정내용입니다.
 
 >저의 주 개발환경이 freemarker(Server Tmeplate Engine)을 사용하기 때문에 프론트와 백엔드를 따로 분리 하지 않고 하나의 프로젝트로 개발하였습니다.
 
@@ -58,7 +58,6 @@ module.exports = {
 디버깅을 위한 source mapping style을 선택할 수 있습니다. 변환되기 전, 변환된 후 혹은 각각의 성능에 따라 devtool option을 선택할 수 있습니다.
 >자세한 설명은 [devtool docs](https://webpack.js.org/configuration/devtool)를 참고하세요. 저에게 도움이 되었던 [양권성님의 블로그](https://perfectacle.github.io/2016/11/14/Webpack-devtool-option-Performance/)도 참고하시면 성능 테스트까지 확인하실 수 있습니다.
 
-
 ### devServer option
 - historyApiFallback: [HTML5 History API](https://developer.mozilla.org/en-US/docs/Web/API/History)를 사용해야 한다면 'true'값으로
 - progress: console에 진행사항 표시(%)
@@ -83,6 +82,7 @@ module.exports = {
 `webpack-dev-server`의 또 하나의 장점인 HMR은 특정 모듈의 변화를 감지하여 변경된 부분만 페이지 reload 없이 빠르게 변경해 줍니다. HMR은 **HMR을 구현하는 'loaders'에서만 작동**됩니다.('react-hot-loader', 'style-loader' etc)
 <br>
 설정방식이 다양하기 때문에 본인에게 맞는 것, 그리고 되는 것으로 취사선택하시면 됩니다. react-hot-loader 방식은 [여기](https://webpack.js.org/guides/hmr-react)를 참조하시면 빠르게 세팅가능합니다.
+>HMR원리를 잘 설명하고 싶지만 너무 이야기가 길어지므로...[이 블로그](https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07#.sqwnkq9y6)를 참고하세요.
 
 ### 작동방법
 ```npm
@@ -109,5 +109,5 @@ Spring Boot Run
 
 ## 3. 삽질해소에 도움이 되었던 참조 사이트
 - watch vs hot: http://stackoverflow.com/questions/38089785/webpack-watch-vs-hot-whats-the-difference
-- HMR 관련: https://github.com/webpack/webpack-dev-server/issues/395
-- devserver 설정관련: https://github.com/webpack/webpack-dev-server/issues/24
+- HMR 설정 관련: https://github.com/webpack/webpack-dev-server/issues/395
+- devserver 설정 관련: https://github.com/webpack/webpack-dev-server/issues/24
