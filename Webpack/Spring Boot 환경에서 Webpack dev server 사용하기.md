@@ -84,11 +84,22 @@ module.exports = {
 <br>
 설정방식이 다양하기 때문에 본인에게 맞는 것, 그리고 되는 것으로 취사선택하시면 됩니다. react-hot-loader 방식은 [여기](https://webpack.js.org/guides/hmr-react)를 참조하시면 빠르게 세팅가능합니다.
 
+### 작동방법
+```npm
+npm start
+```
+```npm
+Spring Boot Run
+```
+<p align="center">
+<img src="/images/Webpack/webpack-dev-server/start.png"/>
+</p>
+
 <p align="center">
 <img src="/images/Webpack/webpack-dev-server/result.gif"/>
 </p>
 <p align="center">
-<code>결과 화면</code>
+<code>npm start 실행</code>
 </p>
 
 ## 3. 삽질해소에 도움이 되었던 참조 사이트
