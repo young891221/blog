@@ -1,6 +1,6 @@
 # Spring Boot 환경에서 webpack dev server 사용하기
 Spring Boot에서 Webpack을 사용하며 script 개발시 `webpack --watch`를 사용하여 디버깅하였습니다. 
-Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading이 가능하였지만 `watch`기능이 bundle를 아에 새것으로 바꿔주는 형식이라 실시간으로 변경을 감지하지 못하였고 그에 따라 디버깅이 굉장히 불편했습니다.
+Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading이 가능하였지만 `watch`기능이 bundle 파일을 아예 새로 만들어 주는 형식이라 실시간으로 변경을 감지하지 못하였고 그에 따라 디버깅이 굉장히 불편했습니다.
 <br>
 프론트 개발시에도 실시간 디버깅을 위해 `webpack-dev-server`를 사용하였고 이제는 F5를 손에서 떼버리게 되었습니다.
 (부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 모든 코드는 [github](https://github.com/young891221/SpringBoot-Webpack)에 있으며 아래는 이에 관한 설정내용입니다.
