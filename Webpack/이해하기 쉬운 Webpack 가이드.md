@@ -129,7 +129,6 @@ plugins: [
 
 `new HotModuleReplacementPlugin()`
 - dev-server 모드에서 Hot Module Replace를 가능하게 해줍니다.
-- 현재 사용되는 github의 예제에서는 Spring 환경이기에 적용되지 않습니다.(궁금해서 넣어봤습니다.)
 
 `new NoErrorsPlugin()`
 - 컴파일 도중 오류가 일어난 리소스들은 제외시켜주고 컴파일 해줍니다.
