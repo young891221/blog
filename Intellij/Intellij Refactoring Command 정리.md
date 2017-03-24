@@ -1,7 +1,8 @@
 # Intellij Refactoring Command TOP 10
 리펙토링 고자였던 저를 탈출시켜준 커맨드들을 소개합니다. 더 많은 커맨드들이 있지만 자주 쓰이는 기능들만 정리하였습니다. 
-주로 커맨드의 장단점과 해당 기능이 실행할때의  before, after 위주로 써보았습니다. 물론 더 자세한 내용들은 Intellij 공식 문서에 잘 정리되어 있지만 한 번에 요약하여 보시기에 좋게 구성하였습니다. 
-command 단축키는 window 기본, window eclipse, mac ox 기본 keymap으로 아래와 같은 포맷으로 정리하였습니다.
+주로 커맨드의 장단점과 해당 기능이 실행할때의 before, after 위주로 써보았습니다. 물론 더 자세한 내용들은 Intellij 공식 문서에 잘 정리되어 있지만 한 번에 요약하여 보시기에 좋으실것 같습니다.
+<br>
+command 단축키는 window 기본, window eclipse, mac ox 기본 keymap을 기준으로 아래와 같은 포맷으로 정리하였습니다.
 >window command: Intellij keymap(eclipse keymap)
 <br>mac command: mac keymap
 
@@ -16,7 +17,7 @@ command 단축키는 window 기본, window eclipse, mac ox 기본 keymap으로 �
 - Refactoring this라는 action으로 리펙토링 기법들을 쫙 나열해 줍니다.
 - 장점은 모든 Refactoring action들을 한 눈에 확인하며 0~9단축키를 통해 손쉽게 실행시킬 수 있습니다.
 - 단점은 단축키를 4개나 눌러야 하는 점이...
-- 개인적으로 이 방법을 추천해 드립니다.
+- ***개인적으로 이 방법을 추천해 드립니다.***
 >window command: ctrl + alt + shift + T(동일)
 <br>mac command: ⌥⇧⌘T
 
