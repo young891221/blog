@@ -4,7 +4,7 @@ Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading�
 프론트 개발시에도 실시간 디버깅을 위해 `webpack-dev-server`를 사용하였고 이제는 F5를 손에서 떼버리게 되었습니다.
 (부끄럽게도 처음에는 Spring 환경에서 `webpack-dev-server`를 못쓰는줄 알았습니다...) 모든 코드는 [github](https://github.com/young891221/blog/blob/master/Webpack/Spring%20Boot%20%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%20Webpack%20dev%20server%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.md)에 있으며 아래는 이에 관한 설정내용입니다.
 
->Spring Boot에서 백엔드와 프론트를 분리하여 따로 서버를 구성하는 [심플한 영어자료](http://justincalleja.com/2016/04/17/serving-a-webpack-bundle-in-spring-boot/)가 있습니다. 저의 환경은 서버 템플릿(freemarker)를 주로 사용하기 때문에 따로 분리는 하지 않고 하나의 프로젝트로 개발하였습니다.
+>저의 주 개발환경이 freemarker(Server Tmeplate Engine)을 사용하기 때문에 프론트와 백엔드를 따로 분리 하지 않고 하나의 프로젝트로 개발하였습니다.
 
 ## 1. webpack-dev-server란?
 webpack-dev-server는 말그대로 임시 개발 서버를 하나 띄워서 live reloading을 제공합니다. 의존성추가와 몇 개의 옵션 추가로 손쉽게 추가할 수 있습니다. 
@@ -21,7 +21,7 @@ npm install webpack-dev-server --save-dev
 ### paskage.json script 설정
 ```javascript
 {
-    ...
+	...
 	"scripts": {
 	    "start": "webpack-dev-server --progress --inline",
 	    "watch": "webpack -d --watch",
@@ -29,7 +29,7 @@ npm install webpack-dev-server --save-dev
 	    "prod": "webpack -p",
 	    "test": "echo \"Error: no test specified\" && exit 1"
 	  }
-  ...
+	...
 }
 ```
 
@@ -64,7 +64,7 @@ module.exports = {
 - quiet: error, warning을 console에서 안보이게 합니다.
 - compress: enable gzip compress(압축)
 - **publicPath**
-	- 브라우저에서 bundle 파일이 위치한 경로를 잡아줘야 합니다.
+	- 브라우저에서 bundle 파일이 위치한 경로를 잡아줘야 합니다.(**중요합니다** 이것 때문에 삽질을...)
 	- `http://localhost:3000/static/bundle.js`에 위치한다면 다음과 같이 잡습니다.
 	```npm
 	publicPath: "/static/"
@@ -78,8 +78,9 @@ module.exports = {
 
 >`webpack-dev-server`는 중요한 옵션들을 CLI를 사용하여 설정할 수 있습니다. 설정이 유연하게 제공되어 자칫 충돌을 일으킬 수 있습니다.(저 또한 HMR설정에 삽질을 많이 했습니다...) CLI설정은 [여기](http://webpack.github.io/docs/webpack-dev-server.html#webpack-dev-server-cli)를 참고하세요.
 
-###HMR(Hot Module Replacement)
-`webpack-dev-server`의 또 하나의 장점인 HMR은 특정 모듈의 변화를 감지하여 변경된 부분만 페이지 reload 없이 빠르게 변경해 줍니다. HMR은 **HMR을 구현하는 'loaders'에서만 작동**됩니다.('react-hot-loader', 'style-loader' etc) 
+### HMR(Hot Module Replacement)
+`webpack-dev-server`의 또 하나의 장점인 HMR은 특정 모듈의 변화를 감지하여 변경된 부분만 페이지 reload 없이 빠르게 변경해 줍니다. HMR은 **HMR을 구현하는 'loaders'에서만 작동**됩니다.('react-hot-loader', 'style-loader' etc)
+<br>
 설정방식이 다양하기 때문에 본인에게 맞는 것, 그리고 되는 것으로 취사선택하시면 됩니다. react-hot-loader 방식은 [여기](https://webpack.js.org/guides/hmr-react)를 참조하시면 빠르게 세팅가능합니다.
 
 <p align="center">
