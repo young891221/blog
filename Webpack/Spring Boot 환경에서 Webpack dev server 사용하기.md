@@ -8,8 +8,8 @@ Boot의 [devtool](http://haviyj.tistory.com/11)를 설정하여 live reloading�
 >저의 주 개발환경이 freemarker(Server Tmeplate Engine)을 사용하기 때문에 프론트와 백엔드를 따로 분리 하지 않고 하나의 프로젝트로 개발하였습니다.
 
 ## 1. webpack-dev-server란?
-webpack-dev-server는 말그대로 임시 개발 서버를 하나 띄워서 live reloading을 제공합니다. 의존성추가와 몇 개의 옵션 추가로 손쉽게 추가할 수 있습니다. 
-`webpack --watch`(writing disk)는 bundle파일을 새로만들지만 `webpack-dev-server`(writing memory)는 memory에 bundle 파일을 올려놓고 변경사항이 생길때 마다 이에 대한 결과를 live reload시켜 줍니다. 고로 훨씬 좋은 performance를 보여줍니다.
+webpack-dev-server는 말그대로 임시 개발 서버를 하나 띄워서 live reloading을 제공합니다. 의존성추가와 몇 개의 옵션 추가로 손쉽게 사용할 수 있습니다. 
+`webpack --watch`(writing disk)는 bundle파일을 새로 만들지만 `webpack-dev-server`(writing memory)는 memory에 bundle 파일을 올려놓고 변경사항이 생길때 마다 이에 대한 결과를 live reload시켜 줍니다. 고로 훨씬 좋은 performance를 보여줍니다.
 
 ## 2. webpack-dev-server 설정
 ```npm
