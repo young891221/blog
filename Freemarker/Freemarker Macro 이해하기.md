@@ -5,7 +5,7 @@
 ## 1. macro란?
 macro는 반복되는 구문에 대해 틀(템플릿?)을 미리 지정해 놓고 반복하여 사용할 수 있게 해주는 함수입니다. 파라미터를 넣을수도 있고 nested, return 함수를 사용하여 유연하게 응용하여 사용할 수 있습니다. 
 또한, macro는 선언 위치에 상관없이 사용가능 합니다.(마치 자바스크립트의 함수 호이스팅같이?) 기본 구조는 다음과 같습니다.
-```injectedfreemarker
+```html
 <#macro name param1 param2 ... paramN>
   ...
   <#nested loopvar1, loopvar2, ..., loopvarN>
@@ -27,7 +27,7 @@ macro는 반복되는 구문에 대해 틀(템플릿?)을 미리 지정해 놓�
 
 ## 2. macro 간단 예제
 ### 간단 생성
-```injectedfreemarker
+```html
 <#--macro1 생성-->
 <#macro macro>
 macro 간단 호출
@@ -37,7 +37,7 @@ macro 간단 호출
 ```
 
 ### 파라미터 사용하기
-```injectedfreemarker
+```html
 <#macro macro a b c="I'm default parameter">
 macro1 파라미터 사용: ${a}, ${b}, ${c}
 </#macro>
@@ -45,7 +45,7 @@ macro1 파라미터 사용: ${a}, ${b}, ${c}
 ```
 
 ### 배열 넘겨주기
-```injectedfreemarker
+```html
 <#macro list title language>
 <p>${title?cap_first}:
 <ul>
@@ -66,7 +66,7 @@ macro1 파라미터 사용: ${a}, ${b}, ${c}
 
 ## 3. macro 응용
 주로 사용하는 구문을 따로 파일로 만들어 놓고 해당 파일을 `import`시켜서 사용하면 코드가 더 깔끔해 집니다.
-```injectedfreemarker
+```html
 <#--import.ftl-->
 <#import "macro3.ftl" as layout1>
 <#import "macro4.ftl" as layout2>
@@ -91,7 +91,7 @@ macro1 파라미터 사용: ${a}, ${b}, ${c}
 </body>
 ```
 
-```injectedfreemarker
+```html
 <#--macro3.ftl-->
 <#macro macro3 a b ext...>
 a = ${a}
@@ -109,7 +109,7 @@ b = ${b}
 </#macro>
 ```
 
-```injectedfreemarker
+```html
 <#--macro4.ftl-->
 <#macro macro4>
 	<#nested 1>
