@@ -27,7 +27,7 @@ macro는 반복되는 구문에 대해 틀(템플릿?)을 미리 지정해 놓�
 
 ## 2. macro 간단 예제
 ### 간단 생성
-```html
+```freemarker
 <#--macro1 생성-->
 <#macro macro>
 macro 간단 호출
