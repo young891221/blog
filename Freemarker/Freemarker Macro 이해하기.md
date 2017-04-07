@@ -69,6 +69,7 @@ macro1 파라미터 사용: ${a}, ${b}, ${c}
 
 ## 3. macro 응용
 주로 사용하는 구문을 따로 파일로 만들어 놓고 해당 파일을 `import`시켜서 사용하면 코드가 더 깔끔해 집니다.
+### 배열 응용
 ```html
 <#--macro3.ftl-->
 <#macro macro3 a b ext...>
@@ -87,6 +88,7 @@ b = ${b}
 </#macro>
 ```
 
+### return과 nested 파라미터 활용
 ```html
 <#--macro4.ftl-->
 <#macro macro4>
@@ -98,6 +100,7 @@ b = ${b}
 </#macro>
 ```
 
+### macro3, macro4를 import하여 사용
 ```html
 <#--import.ftl-->
 <#import "macro3.ftl" as layout1>
