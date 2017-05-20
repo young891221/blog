@@ -1,4 +1,8 @@
 # DDD 입문
+<p align="center">
+<img src="/images/Seminar/ddd/ddd_sign.jpeg"/>
+</p>
+
 최범균님의 DDD강의를 들으며 개인적으로 새로 알게되고 중요하다고 생각되는 포인트만 정리하였다.
 
 ### 인프라스트럭처
