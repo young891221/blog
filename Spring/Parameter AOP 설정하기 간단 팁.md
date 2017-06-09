@@ -32,7 +32,7 @@ public class UserAspect {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
         User user = (User) session.getAttribute("user");
 		... //user로직 처리
-        Object[] args = Arrays.stream(joinPoint.getArgs()).map(data -> { if(data instanceof User) { data = finalUser; } return data; }).toArray();
+        Object[] args = Arrays.stream(joinPoint.getArgs()).map(data -> { if(data instanceof User) { data = user; } return data; }).toArray();
 
         return joinPoint.proceed(args);
     }
