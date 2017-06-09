@@ -50,4 +50,4 @@ compileJava.dependsOn mainBuild
 실행순서를 좀 더 명확하게 설정하고 싶으시다면 `shouldRunAfter`나 `mustRunAfter`를 적용하시면 됩니다.
 
 ### 참고
-task에 대한 자세한 내용은 [권남님 블로그](http://kwonnam.pe.kr/wiki/gradle/task)를 참고하시면 좋습니다. 
+task에 대한 자세한 내용은 [권남님 블로그](http://kwonnam.pe.kr/wiki/gradle/task)를 참고하시면 많은 도움이 됩니다.
