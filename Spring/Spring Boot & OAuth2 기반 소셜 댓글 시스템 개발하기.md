@@ -59,7 +59,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 ### 기본 구현 프로세스
 소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다.
 <p align="center">
-<img src="/images/Spring/oauth2/social_config.png"/>
+<img src="/images/Spring/oauth2/social.png"/>
 </p>
 
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 하나 가져와서 소셜별로 필요한 config들을 설정해 줍니다. 그리고 마지막에 `FilterRegistrationBean`라는 놈에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
