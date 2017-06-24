@@ -37,7 +37,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 >번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
  
 <p align="center">
-<img src="/images/Spring/oauth2/directory2.png" style="max-width:50;"/>
+<img src="/images/Spring/oauth2/directory2.png" width="50%"/>
 </p>
 <p align="center">
 <code>Spring Security OAuth2에는 인증타입이 모두 구현되어 있습니다</code>
@@ -67,7 +67,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 ### 기본 구현 프로세스
 소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다.
 <p align="center">
-<img src="/images/Spring/oauth2/social.png" style="max-width:50;"/>
+<img src="/images/Spring/oauth2/social.png" width="35%"/>
 </p>
 
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
