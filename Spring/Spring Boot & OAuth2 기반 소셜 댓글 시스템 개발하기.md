@@ -33,14 +33,14 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 <img src="/images/Spring/oauth2/client_credentials_flow.png"/>
 </p>
 
+>번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
+ 
 <p align="center">
-<img src="/images/Spring/oauth2/directory.png"/>
+<img src="/images/Spring/oauth2/directory2.png"/>
 </p>
 <p align="center">
 <code>Spring Security OAuth2에는 인증타입이 모두 구현되어 있습니다</code>
 </p>
-
->번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
  
 ### 프로젝트 환경
 다음은 프로젝트 개발 환경과 사용한 라이브러리입니다.
