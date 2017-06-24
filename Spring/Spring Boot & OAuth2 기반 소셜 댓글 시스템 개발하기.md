@@ -1,5 +1,5 @@
 # Spring Boot & OAuth2 기반 소셜 댓글 시스템 개발하기
-회사에서의 잉여력 + 개인의 잉여력을 가지고 회사에도 도움이 되고 개인적인 공부에도 도움이 되는 프로젝트를 진행해 보고 싶었습니다. 
+회사에서의 잉여력 + 개인의 잉여력을 가지고 회사에도 도움이 되고 개인적인 공부에도 도움이 되는 프로젝트를 진행해 보고 싶었습니다.<br>
 제가 뉴스나 혹은 기타 블로그글을 볼 때도 대부분 글의 마지막까지 내려 댓글을 보는데 대부분이 소셜댓글이었습니다. 그래서 공부도 하고 제 서비스에 댓글기능도 붙일겸 직접 소셜 인증(페이스북, 구글, 트위터, 카카오) & 간단한 댓글 Getting Started를 
 개발하여 보기로 야심찬 계획을 세웠습니다. 그대로 사용할 순 없겠지만 Getting Started 느낌의 심플한 프로젝트로 구성해 보았습니다. 모든 소스는 [github](https://github.com/young891221/spring-boot-social-comment)에 있습니다.
 
@@ -33,6 +33,13 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 <img src="/images/Spring/oauth2/client_credentials_flow.png"/>
 </p>
 
+<p align="center">
+<img src="/images/Spring/oauth2/directory.png"/>
+</p>
+<p align="center">
+<code>Spring Security OAuth2에는 인증타입이 모두 구현되어 있습니다</code>
+</p>
+
 >번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
  
 ### 프로젝트 환경
@@ -62,19 +69,29 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 <img src="/images/Spring/oauth2/social.png"/>
 </p>
 
-Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 하나 가져와서 소셜별로 필요한 config들을 설정해 줍니다. 그리고 마지막에 `FilterRegistrationBean`라는 놈에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
-`FilterRegistrationBean`는 Security 이외에도 필터를 한곳에 몰아서 등록해도 상관 없습니다.
+Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
+`FilterRegistrationBean`는 Security 이외에 다른 곳에 등록하여 사용하셔도 무방합니다.
 <p align="center">
 <img src="/images/Spring/oauth2/source1.png"/>
+</p>
+
+`OAuth2ClientAuthenticationProcessingFilter`의 내부를 까보면 `attemptAuthentication`라는 오바리이딩된 메소드가 있는데 추후 내부로직 진행이 어떻게 흘러가는지 궁금하시다면 
+이 부분을 기준으로 주요로직들의 흐름을 읽으실 수 있습니다.
+<p align="center">
+<img src="/images/Spring/oauth2/source3.png"/>
 </p>
 
 인증이 완료되면 위의 필터의 `setAuthenticationSuccessHandler`에서 설정한 경로로 리다이렉트되는데 저는 AOP를 사용하여 `@SocialUser`라는 파라미터를 가진 놈들에게 세션에 있는 user 데이터를 바로 반환하거나 인증이 완료된 후 
 userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주고 애노테이션에 선언된 user 객체에 바인딩시켜주는 방식을 사용하였습니다. 한마디로 `@SocialUser`를 선언한 파라미터는 user에 대한 정보를 가져올 수 있습니다. 
+ 이 부분에 대한 자세한 소스는 [이곳](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/aop/UserAspect.java)을 참조하세요.
 <p align="center">
-<img src="/images/Spring/oauth2/source1.png"/>
+<img src="/images/Spring/oauth2/source2.png"/>
 </p>
 
-이 부분에 대한 자세한 소스는 [이곳](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/aop/UserAspect.java)을 참조하세요.
+>여기서 포인트컷을 `execution(* *(.., @com.social.annotation.SocialUser (*), ..))`와 같이 선언하는 것은 모든 반환타입, 모든 메소드에 @SocialUser 애노테이션이 달려 있는 파라미터를 
+찾는 다는 의미입니다.(자세한 내용은 [이곳](http://haviyj.tistory.com/36)을 참조해 주세요) 하지만, 이와 같은 방식은 부트구동시 모든 빈을 탐색하기에 runtime이 굉장히 오래 걸립니다.<br>
+따라서 위와 같은 방식의 파라미터 애노테이션을 사용한 방식을 구현하고 싶으시다면 `HandlerMethodArgumentResolver`와 같은 인터페이스를 구현하여 사용하시는게 바람직합니다.
+
 <br>
 댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...그냥 일반적인 댓글 하나씩만 달도록만 하였습니다.
 
