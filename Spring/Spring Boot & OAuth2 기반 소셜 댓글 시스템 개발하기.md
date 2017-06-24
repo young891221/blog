@@ -37,7 +37,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 >번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
  
 <p align="center">
-<img src="/images/Spring/oauth2/directory2.png"/>
+<img src="/images/Spring/oauth2/directory2.png" style="max-width:50;"/>
 </p>
 <p align="center">
 <code>Spring Security OAuth2에는 인증타입이 모두 구현되어 있습니다</code>
@@ -67,7 +67,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 ### 기본 구현 프로세스
 소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다.
 <p align="center">
-<img src="/images/Spring/oauth2/social.png"/>
+<img src="/images/Spring/oauth2/social.png" style="max-width:50;"/>
 </p>
 
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
@@ -94,6 +94,7 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 따라서 위와 같은 방식의 파라미터 애노테이션을 사용한 방식을 구현하고 싶으시다면 `HandlerMethodArgumentResolver`와 같은 인터페이스를 구현하여 사용하시는게 바람직합니다.
 
 <br>
+redis는 일부러 embbeded redis를 썼습니다. 추후 실서비스에 적용한다면 바꿔야 겠지만..Getting Started 느낌으로 어디서나 구동하기 좋고 따로 설치와 관리가 필요없기에 사용하기 편리하였습니다.  
 댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글이 없이 댓글 하나씩만 달수 있도록 하였습니다.
 
 ### 결과
