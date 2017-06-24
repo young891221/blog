@@ -18,7 +18,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 페이스북, 구글, 카카오가 사용하는 방식입니다. 아래 그림의 Flow를 보시면 더 이해하기 쉽습니다.
 
 <p align="center">
-<img src="/images/spring/oauth2/auth_code_flow.png"/>
+<img src="/images/Spring/oauth2/auth_code_flow.png"/>
 </p>
 
 - Resource Owner: 인증이 필요한 유저
@@ -30,7 +30,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 **애초에 resource owner가 없으므로 사용자의 개인정보를 얻을 수 없는 방식입니다.** 따라서 제가 만드려는 소셜 댓글 플랫폼에는 사용할 수 없었습니다.(그래서 트위터는 OAuth1방식으로...ㅠㅠ)
 
 <p align="center">
-<img src="/images/spring/oauth2/client_credentials_flow.png"/>
+<img src="/images/Spring/oauth2/client_credentials_flow.png"/>
 </p>
 
 >번외로 Implicit Grant 방식은 Authorization grant types처럼 서버와 서버에서 인증을 수행하는 방식으로 클라이언트가 token이나 secret이 노출되지 않는 것과는 다르게 javascript처럼 resource owner쪽에서 전적으로 인증을 수행하는 방식입니다.
@@ -53,25 +53,25 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 ### 설계
 인증요청시 Spring Security에 설정된 필터를 통해 인증이 수행되고 인증이 완료되면 redis를 사용해 세션을 담습니다. 회원에 대한 정보는 h2 db에 심플한 정보를 담고 사용합니다.
 <p align="center">
-<img src="/images/spring/oauth2/architecture.png"/>
+<img src="/images/Spring/oauth2/architecture.png"/>
 </p>
 
 ### 기본 구현 프로세스
 소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다.
 <p align="center">
-<img src="/images/spring/oauth2/social_config.png"/>
+<img src="/images/Spring/oauth2/social_config.png"/>
 </p>
 
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 하나 가져와서 소셜별로 필요한 config들을 설정해 줍니다. 그리고 마지막에 `FilterRegistrationBean`라는 놈에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
 `FilterRegistrationBean`는 Security 이외에도 필터를 한곳에 몰아서 등록해도 상관 없습니다.
 <p align="center">
-<img src="/images/spring/oauth2/source1.png"/>
+<img src="/images/Spring/oauth2/source1.png"/>
 </p>
 
 인증이 완료되면 위의 필터의 `setAuthenticationSuccessHandler`에서 설정한 경로로 리다이렉트되는데 저는 AOP를 사용하여 `@SocialUser`라는 파라미터를 가진 놈들에게 세션에 있는 user 데이터를 바로 반환하거나 인증이 완료된 후 
 userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주고 애노테이션에 선언된 user 객체에 바인딩시켜주는 방식을 사용하였습니다. 한마디로 `@SocialUser`를 선언한 파라미터는 user에 대한 정보를 가져올 수 있습니다. 
 <p align="center">
-<img src="/images/spring/oauth2/source1.png"/>
+<img src="/images/Spring/oauth2/source1.png"/>
 </p>
 
 이 부분에 대한 자세한 소스는 [이곳](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/aop/UserAspect.java)을 참조하세요.
@@ -83,7 +83,7 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 - http://localhost:8080/comment/{service}/{id}
 - http://localhost:8080/json/comment/{service}/{id}
 <p align="center">
-<img src="/images/spring/oauth2/view_json.png"/>
+<img src="/images/Spring/oauth2/view_json.png"/>
 </p>
 <p align="center">
 <code>css는 넘나 어렵네요..</code>
