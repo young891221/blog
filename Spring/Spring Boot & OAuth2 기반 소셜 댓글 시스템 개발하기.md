@@ -1,11 +1,12 @@
 # Spring Boot & OAuth2 기반 소셜 댓글 시스템 개발하기
-회사에서의 잉여력 + 개인의 잉여력을 가지고 회사에도 도움이 되고 개인적인 공부에도 도움이 되는 프로젝트를 진행해 보고 싶었습니다.<br>
-제가 뉴스나 혹은 기타 블로그글을 볼 때도 대부분 글의 마지막까지 내려 댓글을 보는데 대부분이 소셜댓글이었습니다. 그래서 공부도 하고 제 서비스에 댓글기능도 붙일겸 직접 소셜 인증(페이스북, 구글, 트위터, 카카오) & 간단한 댓글 Getting Started를 
-개발하여 보기로 야심찬 계획을 세웠습니다. 그대로 사용할 순 없겠지만 Getting Started 느낌의 심플한 프로젝트로 구성해 보았습니다.<br> 
+회사에서의 잉여력 + 개인의 잉여력을 가지고 회사에도 도움 + 개인적인 공부에도 도움이 되는 프로젝트를 진행해 보고 싶었습니다.<br>
+제가 맡고 있는 서비스에 아쉬운점이 소셜 댓글이 없다는 것인데(ㅠ.ㅠ) 아쉬움도 달래고 공부도 하고 제 서비스에 댓글기능도 붙일겸 직접 소셜 인증(페이스북, 구글, 트위터, 카카오) & 간단한 댓글 Getting Started를 
+개발하기로 야심찬 계획(?)을 세웠습니다.<br> 
 **모든 소스는 [github](https://github.com/young891221/spring-boot-social-comment)에 있습니다.**
 
 ### 개요
-목표는 페이스북, 구글, 트위터, 카카오 등 국내에서 많이 쓰이는 서비스들의 OAuth인증을 통한 댓글 시스템 구현하기!<br>
+***목표는 페이스북, 구글, 트위터, 카카오 등 국내에서 많이 쓰이는 서비스들의 OAuth인증을 통한 댓글 시스템 구현하기!***
+<br>
 여기서 트위터를 제외한 다른 인증은 모두 OAuth2를 사용합니다. Spirng에는 이를 구현한 고마운 라이브러리인 Spring Social과 **Spring Security OAuth2**가 있습니다. 전자의 경우 마지막 업데이트가 2년전이고 정해진 디비 스키마에 데이터가 저장되는 방식이라 
 커스터마이징한 개발이 가능한 후자를 선택하였습니다. Spring Security OAuth2는 인증과 개인정보 API가 내부로직을 몰라도 될 만큼 편리하게 구현되어 있어 그냥 갔다 쓰시면 됩니다. 그래도 개발자라면 어떻게 동작하는지 정도는 알아야 겠다는 마음가짐(?) 
 때문에 동작 프로세스 정도는 소스를 까보면서 분석해 보았습니다.(추후 세션에서...)<br>
@@ -59,7 +60,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 - handlebars.js
 
 ### 설계
-인증요청시 Spring Security에 설정된 필터를 통해 인증이 수행되고 인증이 완료되면 redis를 사용해 세션을 담습니다. 회원에 대한 정보는 h2 db에 심플한 정보를 담고 사용합니다.
+인증요청시 Spring Security에 설정된 필터를 통해 인증이 수행되고 인증이 완료되면 redis를 사용해 세션정보를 담습니다. 회원에 대한 정보는 h2 db에 심플한 정보로 저장하여 사용합니다.
 <p align="center">
 <img src="/images/Spring/oauth2/architecture.png"/>
 </p>
@@ -70,20 +71,21 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 <img src="/images/Spring/oauth2/social.png" width="35%"/>
 </p>
 
-Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터를 set해주고 빈으로 등록해 줍니다. 
-`FilterRegistrationBean`는 Security 이외에 다른 곳에 등록하여 사용하셔도 무방합니다.
+Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터리스트를 set해주고 빈으로 등록해 줍니다. 
+`FilterRegistrationBean`는 SecurityConfig 이외에 다른 곳에 빈으로 등록하여 사용하셔도 무방합니다.(Filter들의 결집을 위해?) 
+SecurityConfig는 [여기](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/config/SecurityConfig.java)를 참조하세요.
 <p align="center">
 <img src="/images/Spring/oauth2/source1.png"/>
 </p>
 
-`OAuth2ClientAuthenticationProcessingFilter`의 내부를 까보면 `attemptAuthentication`라는 오바리이딩된 메소드가 있는데 추후 내부로직 진행이 어떻게 흘러가는지 궁금하시다면 
+`OAuth2ClientAuthenticationProcessingFilter`의 내부를 까보면 `attemptAuthentication`이라는 오버라이드된 메소드가 있는데 추후 내부로직 진행이 어떻게 흘러가는지 궁금하시다면 
 이 부분을 기준으로 주요로직들의 흐름을 읽으실 수 있습니다.
 <p align="center">
 <img src="/images/Spring/oauth2/source3.png"/>
 </p>
 
-인증이 완료되면 위의 필터의 `setAuthenticationSuccessHandler`에서 설정한 경로로 리다이렉트되는데 저는 AOP를 사용하여 `@SocialUser`라는 파라미터를 가진 놈들에게 세션에 있는 user 데이터를 바로 반환하거나 인증이 완료된 후 
-userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주고 애노테이션에 선언된 user 객체에 바인딩시켜주는 방식을 사용하였습니다. 한마디로 `@SocialUser`를 선언한 파라미터는 user에 대한 정보를 가져올 수 있습니다. 
+인증이 완료되면 위의 필터의 `setAuthenticationSuccessHandler`에서 설정한 경로로 리다이렉트됩니다. 저는 AOP를 사용하여 `@SocialUser`라는 파라미터를 가진 놈들에게 세션에 있는 user 데이터를 바로 반환하거나 인증이 완료된 후 
+userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주고 애노테이션에 선언된 user 객체에 바인딩시켜주는 방식을 사용하였습니다. 즉, `@SocialUser`를 선언한 파라미터는 user에 대한 정보를 가져올 수 있습니다. 
  이 부분에 대한 자세한 소스는 [이곳](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/aop/UserAspect.java)을 참조하세요.
 <p align="center">
 <img src="/images/Spring/oauth2/source2.png"/>
@@ -95,10 +97,10 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 
 <br>
 redis는 일부러 embbeded redis를 썼습니다. 추후 실서비스에 적용한다면 바꿔야 겠지만..Getting Started 느낌으로 어디서나 구동하기 좋고 따로 설치와 관리가 필요없기에 사용하기 편리하였습니다.  
-댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글이 없이 댓글 하나씩만 달수 있도록 하였습니다.
+댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글 없이 댓글 하나씩만 달수 있도록 하였습니다.
 
 ### 결과
-로그인 인증만 테스트해 볼 수 있는 페이지와 댓글기능 사용시 인증할 수 있는 페이지 2개로 구성되어 있습니다. 댓글을 제공 방식은 view나 Json으로 데이터를 전송하는 방식을 생각해 보았습니다.
+로그인 인증만 테스트해 볼 수 있는 페이지와 댓글기능 사용시 인증할 수 있는 페이지 2개로 구성되어 있습니다. 댓글 제공 방식은 view나 Json으로 데이터를 전송하는 방식을 생각해 보았습니다.
 - http://localhost:8080/comment/{service}/{id}
 - http://localhost:8080/json/comment/{service}/{id}
 <p align="center">
@@ -111,5 +113,5 @@ redis는 일부러 embbeded redis를 썼습니다. 추후 실서비스에 적용
 ### 참고사이트
 - [spring boot oauth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 - [oauth2 spec](http://www.bubblecode.net/en/2016/01/22/understanding-oauth2/)
-- [이수홍님 oauth2](https://brunch.co.kr/@sbcoba/8)
+- [이수홍님의 oauth2](https://brunch.co.kr/@sbcoba/8)
 - [embbeded redis](https://github.com/kstyrc/embedded-redis)
