@@ -93,7 +93,7 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 따라서 위와 같은 방식의 파라미터 애노테이션을 사용한 방식을 구현하고 싶으시다면 `HandlerMethodArgumentResolver`와 같은 인터페이스를 구현하여 사용하시는게 바람직합니다.
 
 <br>
-댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...그냥 일반적인 댓글 하나씩만 달도록만 하였습니다.
+댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글이 없이 댓글 하나씩만 달수 있도록 하였습니다.
 
 ### 결과
 로그인 인증만 테스트해 볼 수 있는 페이지와 댓글기능 사용시 인증할 수 있는 페이지 2개로 구성되어 있습니다. 댓글을 제공 방식은 view나 Json으로 데이터를 전송하는 방식을 생각해 보았습니다.
@@ -106,3 +106,8 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 <code>css는 넘나 어렵네요..</code>
 </p>
 
+### 참고사이트
+- [spring boot oauth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+- [oauth2 spec](http://www.bubblecode.net/en/2016/01/22/understanding-oauth2/)
+- [이수홍님 oauth2](https://brunch.co.kr/@sbcoba/8)
+- [embbeded redis](https://github.com/kstyrc/embedded-redis)
