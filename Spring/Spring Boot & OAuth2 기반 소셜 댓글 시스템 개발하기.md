@@ -66,6 +66,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 </p>
 
 ### 기본 구현 프로세스
+#### 소셜정보 설정
 소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다. 
 페이스북의 경우는 userInfo정보를 가져오기 위한 API 규격이 다름니다. 다른 소셜인증의 경우 필요한 디폴트 정보가 왠만큼 다 있고 scope에 요청정보를 명시해 주는 형식이지만 
  페이스북은 `fields`파라미터를 사용하여 `fields=id,name,email` 형식으로 요청해야 정상적으로 동작합니다.
@@ -73,13 +74,18 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 <img src="/images/Spring/oauth2/social_config.png" width="35%"/>
 </p> 
 
+#### clientAuthenticationScheme?
 `clientAuthenticationScheme`의 경우 디폴트는 `header`로 지정되며 `form`과 `query`는 같은 방식으로 동작합니다. 이 로직 처리는 `DefaultClientAuthenticationHandler` 클래스에서 진행되며 
 `header`의 경우 아래와 같이 clientId와 clientSecret을 Base64로 인코등히여 헤더에 포함되는 형식으로 request를 요청합니다.
  이에 관한 자세한 사항은 [OAuth2 Spec 문서](http://www.rfc-editor.org/rfc/rfc7617.txt)를 참고하시기 바랍니다.
 <p align="center">
-<img src="/images/Spring/oauth2/scheme.png"/>
+<img src="/images/Spring/oauth2/scheme.png" width="80%"/>
+</p>
+<p align="center">
+<code>clientAuthenticationScheme Class</code>
 </p>
 
+#### 인증처리용 Filter 설정
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터리스트를 set해주고 빈으로 등록해 줍니다. 
 `FilterRegistrationBean`는 SecurityConfig 이외에 다른 곳에 빈으로 등록하여 사용하셔도 무방합니다.(Filter들의 결집을 위해?) 
 SecurityConfig는 [여기](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/config/SecurityConfig.java)를 참조하세요.
@@ -90,21 +96,22 @@ SecurityConfig는 [여기](https://github.com/young891221/spring-boot-social-com
 `OAuth2ClientAuthenticationProcessingFilter`의 내부를 까보면 `attemptAuthentication`이라는 오버라이드된 메소드가 있는데 추후 내부로직 진행이 어떻게 흘러가는지 궁금하시다면 
 이 부분을 기준으로 주요로직들의 흐름을 읽으실 수 있습니다.
 <p align="center">
-<img src="/images/Spring/oauth2/source3.png"/>
+<img src="/images/Spring/oauth2/source3.png" width="95%"/>
 </p>
 
+#### 인증 후 세션처리
 인증이 완료되면 위의 필터의 `setAuthenticationSuccessHandler`에서 설정한 경로로 리다이렉트됩니다. 저는 AOP를 사용하여 `@SocialUser`라는 파라미터를 가진 놈들에게 세션에 있는 user 데이터를 바로 반환하거나 인증이 완료된 후 
 userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주고 애노테이션에 선언된 user 객체에 바인딩시켜주는 방식을 사용하였습니다. 즉, `@SocialUser`를 선언한 파라미터는 user에 대한 정보를 가져올 수 있습니다. 
  이 부분에 대한 자세한 소스는 [이곳](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/aop/UserAspect.java)을 참조하세요.
 <p align="center">
-<img src="/images/Spring/oauth2/source2.png"/>
+<img src="/images/Spring/oauth2/source2.png" width="80%"/>
 </p>
 
 >여기서 포인트컷을 `execution(* *(.., @com.social.annotation.SocialUser (*), ..))`와 같이 선언하는 것은 모든 반환타입, 모든 메소드에 @SocialUser 애노테이션이 달려 있는 파라미터를 
 찾는 다는 의미입니다.(자세한 내용은 [이곳](http://haviyj.tistory.com/36)을 참조해 주세요) 하지만, 이와 같은 방식은 부트구동시 모든 빈을 탐색하기에 runtime이 굉장히 오래 걸립니다.<br>
 따라서 위와 같은 방식의 파라미터 애노테이션을 사용한 방식을 구현하고 싶으시다면 `HandlerMethodArgumentResolver`와 같은 인터페이스를 구현하여 사용하시는게 바람직합니다.
 
-<br>
+#### 인증 이외에..
 redis는 일부러 embbeded redis를 썼습니다. 추후 실서비스에 적용한다면 바꿔야 겠지만..Getting Started 느낌으로 어디서나 구동하기 좋고 따로 설치와 관리가 필요없기에 사용하기 편리하였습니다.  
 댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글 없이 댓글 하나씩만 달수 있도록 하였습니다.
 
