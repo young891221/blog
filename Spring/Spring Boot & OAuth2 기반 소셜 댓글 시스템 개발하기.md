@@ -66,9 +66,18 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 </p>
 
 ### 기본 구현 프로세스
-소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다.
+소셜관련 clientId, clientSecret의 정보를 application.yml에 넣어줍니다. 
+페이스북의 경우는 userInfo정보를 가져오기 위한 API 규격이 다름니다. 다른 소셜인증의 경우 필요한 디폴트 정보가 왠만큼 다 있고 scope에 요청정보를 명시해 주는 형식이지만 
+ 페이스북은 `fields`파라미터를 사용하여 `fields=id,name,email` 형식으로 요청해야 정상적으로 동작합니다.
 <p align="center">
-<img src="/images/Spring/oauth2/social.png" width="35%"/>
+<img src="/images/Spring/oauth2/social_config.png" width="35%"/>
+</p> 
+
+`clientAuthenticationScheme`의 경우 디폴트는 `header`로 지정되며 `form`과 `query`는 같은 방식으로 동작합니다. 이 로직 처리는 `DefaultClientAuthenticationHandler` 클래스에서 진행되며 
+`header`의 경우 아래와 같이 clientId와 clientSecret을 Base64로 인코등히여 헤더에 포함되는 형식으로 request를 요청합니다.
+ 이에 관한 자세한 사항은 [OAuth2 Spec 문서](http://www.rfc-editor.org/rfc/rfc7617.txt)를 참고하시기 바랍니다.
+<p align="center">
+<img src="/images/Spring/oauth2/scheme.png"/>
 </p>
 
 Security설정에서 `OAuth2ClientAuthenticationProcessingFilter`라는 인증처리용 필터를 가져와서 소셜별로 필요한 설정들을 해줍니다. 그리고 마지막에 `FilterRegistrationBean`에게 소셜 필터리스트를 set해주고 빈으로 등록해 줍니다. 
