@@ -111,6 +111,10 @@ userDetails에 관한 정보를 User 객체에 맵핑하여 db에 저장해 주�
 찾는 다는 의미입니다.(자세한 내용은 [이곳](http://haviyj.tistory.com/36)을 참조해 주세요) 하지만, 이와 같은 방식은 부트구동시 모든 빈을 탐색하기에 runtime이 굉장히 오래 걸립니다.<br>
 따라서 위와 같은 방식의 파라미터 애노테이션을 사용한 방식을 구현하고 싶으시다면 `HandlerMethodArgumentResolver`와 같은 인터페이스를 구현하여 사용하시는게 바람직합니다.
 
+### 트위터 인증은?
+트위터는 어쩔 수 없이 `Spring-social-twitter`를 사용하여 OAuth1 Spec으로 구현하였습니다. 
+이 부분은 [소스](https://github.com/young891221/spring-boot-social-comment/blob/master/social-comment/src/main/java/com/social/controller/TwitterController.java)를 직접 참고하세요~
+
 ### 인증 이외에..
 redis는 일부러 embbeded redis를 썼습니다. 추후 실서비스에 적용한다면 바꿔야 겠지만..Getting Started 느낌으로 어디서나 구동하기 좋고 따로 설치와 관리가 필요없기에 사용하기 편리하였습니다.  
 댓글은 1댑스의 대댓글 기능을 만들고자 하였으나 귀차니즘이 발동하여...대댓글 없이 댓글 하나씩만 달수 있도록 하였습니다.
