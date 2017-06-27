@@ -7,7 +7,7 @@
 ## 개요
 ***목표는 페이스북, 구글, 트위터, 카카오 등 국내에서 많이 쓰이는 서비스들의 OAuth인증을 통한 댓글 시스템 구현하기!***
 <br>
-여기서 트위터를 제외한 다른 인증은 모두 OAuth2를 사용합니다. Spirng에는 이를 구현한 고마운 라이브러리인 Spring Social과 **Spring Security OAuth2**가 있습니다. 전자의 경우 마지막 업데이트가 2년전이고 정해진 디비 스키마에 데이터가 저장되는 방식이라 
+여기서 트위터를 제외한 다른 인증은 모두 OAuth2를 사용합니다. Spring에는 이를 구현한 고마운 라이브러리인 Spring Social과 **Spring Security OAuth2**가 있습니다. 전자의 경우 마지막 업데이트가 2년전이고 정해진 디비 스키마에 데이터가 저장되는 방식이라 
 커스터마이징한 개발이 가능한 후자를 선택하였습니다. Spring Security OAuth2는 인증과 개인정보 API가 내부로직을 몰라도 될 만큼 편리하게 구현되어 있어 그냥 갔다 쓰시면 됩니다. 그래도 개발자라면 어떻게 동작하는지 정도는 알아야 겠다는 마음가짐(?) 
 때문에 동작 프로세스 정도는 소스를 까보면서 분석해 보았습니다.(추후 세션에서...)<br>
 >cf.트위터 developer 사이트를 들어가 보시면 [Application-only authentication](https://dev.twitter.com/oauth/application-only)으로 OAuth2를 제공해 준다고 설명되어 있습니다. 
