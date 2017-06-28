@@ -61,7 +61,7 @@ macro1 파라미터 사용: ${a}, ${b}, ${c}
 ```
 
 <p align="center">
-<img src="/images/Freemarker/1.png"/>
+<kbd><img src="/images/Freemarker/1.png"/></kbd>
 </p>
 <p align="center">
 <code>간단 예제 출력 결과</code>
@@ -127,7 +127,7 @@ b = ${b}
 ```
 
 <p align="center">
-<img src="/images/Freemarker/2.png"/>
+<kbd><img src="/images/Freemarker/2.png"/></kbd>
 </p>
 <p align="center">
 <code>import 응용 출력 결과</code>
