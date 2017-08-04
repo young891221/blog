@@ -46,5 +46,5 @@ variable...과는 반대로 선택된 변수의 공용 변수를 inline 방식�
 <br>mac command: ⌥⌘N
 
 ## 6. parameter...
-선택된 변수를 method의 paratemter값으로 받을 수 있게끔 변환해 준다.
+선택된 변수를 method의 paratemter값으로 받을 수 있게끔 추출해 준다.
 
