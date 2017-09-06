@@ -162,7 +162,7 @@ public class Application {
 }
 ```
 
-자, 모든 환경과 코드 작성이 끝났습니다. 실제로 잘 돌아가는지 확인하기 위해 몇 가지 테스트 코드를 작성해 보겠습니다. 테스트 코드는 @DataJpaTest를 사용하려다가 그냥 MySQL에 직접 넣고 빼며 테스트하고 싶어서 @SpringBootTest를 사용하였습니다. 
+자, 모든 환경과 코드 작성이 끝났습니다. 실제로 잘 돌아가는지 확인하기 위해 몇 가지 테스트 코드를 작성해 보겠습니다. 테스트 코드는 @DataJpaTest를 사용하려다가 그냥 MySQL에 직접 데이터를 넣고 빼며 테스트하고 싶어서 @SpringBootTest를 사용하였습니다. 
 직접 코드를 보면서 확인해 보겠습니다.
 
 ```java
@@ -182,10 +182,10 @@ public class JpaEnversTest {
                     bookRepository.save(Book.builder().title("테스트" + index).publishedAt(Timestamp.valueOf(LocalDateTime.now())).build())
             );
 
-            //1번 삭제
+            //1번 Book 삭제
             bookRepository.delete(Long.valueOf(1));
 
-            //2번 수정하기 3번 진행
+            //2번 Book 수정하기 3번 반복
             Book book2 = bookRepository.findOne(Long.valueOf(2));
             IntStream.rangeClosed(1, 3).forEach(index -> {
                 book2.setTitle("수정" + index);
@@ -244,3 +244,7 @@ public class JpaEnversTest {
     }
 }
 ```
+
+Book_데이터_생성() 메소드에서 초기 데이터를 세팅합니다. 데이터 세팅 후 이력이 제대로 체크되는지 확인하기 위해 몇번의 데이터 삭제, 수정을 반복합니다.<br>
+Book_Revision_NULL_데이터_검색() 메소드는 삭제된 1번 Book을 조회하기 때문에 exception이 발생하게 됩니다.<br>
+Book_Revision_검색(), Book_Revision_Page_검색(), Book_Revisions_검색() 메소드는 각각의 조회 API를 사용해는 예제 테스트로 작성하였습니다.<br>
