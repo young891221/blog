@@ -22,8 +22,8 @@ Hibernate Envers 프로젝트는 각각의 대상 엔티티의 이력관리를 �
 - Gradle 3.5
 
 ## Envers 적용하기
-먼저 application.yml에 datasource부터 셋팅하겠습니다. 저희는 스프링 부트를 사용하기 때문에 다음과 같이 간단하게 기본적인 datasource 정보를 입력하여 셋팅할 수 있습니다. 한 가지 특별한 점은 `jpa.hibernate.ddl-auto: create`로 설정한 부분입니다. 
-이 부분은 프로젝트가 구동될때 마다 새롭게 테이블을 생성한다고 명시하는 부분입니다. 실제로 서비스에서는 절대 사용하면 안되는 설정이지만 전 테스트를 돌릴때 마다 새로 테이블을 생성해서 결과를 볼 수 있도록 일부러 설정해 놓았습니다.
+먼저 application.yml에 datasource부터 셋팅하겠습니다. 저희는 스프링 부트를 사용하기 때문에 다음과 같이 간단하게 기본적인 datasource 정보를 입력하여 디비와 연동할 수 있습니다. 한 가지 특별한 점은 `jpa.hibernate.ddl-auto: create`로 설정한 부분입니다. 
+이 부분은 프로젝트가 구동될때 마다 새롭게 테이블을 생성한다고 명시하는 부분입니다. 실제로 서비스에서는 절대 사용하면 안되는 설정이지만 전 테스트를 돌릴때 마다 새로 테이블을 생성해서 결과를 볼 수 있도록 일부러 설정해 놓았습니다.(다 예제소스의 간편화를 위해...)
 
 ```yaml
 spring:
@@ -52,13 +52,13 @@ apply plugin: "hibernatetools-gradle-plugin"
 ...
 ```
 
-위와 같이 생성하면 인텔리제이에서 다음과 같이 하이버네이트 플러그인을 실행하여 테이블을 생성할 수 있습니다.
+설정 후 인텔리제이에서 다음과 같이 하이버네이트 플러그인을 실행하면 테이블이 생성됩니다.
  
 <p align="center">
 <img src="/images/Hibernate/envers/1.png"/>
 </p>
 
-이제 테스트용 도메인과 클래스 몇개를 추가해 보도록 하겠습니다. 아주 심플합니다.
+이제 테스트용 도메인과 클래스 몇개를 추가해 보도록 하겠습니다. 도메인은 아주 심플합니다.
 
 ```java
 @Data
@@ -82,7 +82,7 @@ public class Book implements Serializable {
 }
 ```
 
-Book 클래스는 롬복을 사용하여 아주 심플하게 구성하였습니다. 실질적으로 여기에 가장 중요한 `@Audited`어노테이션이 들어가 있습니다. "이력관리하고 싶은 타겟 엔티티가 있다!"하면 `@Audited`만 붙이면 해결이 됩니다. 쉽죠? 
+Book 클래스는 롬복을 사용하여 구성하였습니다. 실질적으로 여기에 가장 중요한 `@Audited`어노테이션이 들어가 있습니다. "이력관리하고 싶은 타겟 엔티티가 있다!"하면 `@Audited`만 붙이면 해결이 됩니다. 쉽죠? 
 좀 더 풀어서 설명하자면 Book 도메인 이력관리용 테이블로 book_aud 테이블과 revinfo 테이블이 필요합니다. book_aud는 book의 필드값 3개와 이력관리 ID값인 `rev`, 타입을 나타내는 `revtype`으로 설계됩니다. `revtype`값의 의미는 다음과 같습니다.
 #### revtype
 - 0 : insert
@@ -90,13 +90,13 @@ Book 클래스는 롬복을 사용하여 아주 심플하게 구성하였습니�
 - 2 : delete
 
 이 부분이 좀 아쉽긴 하네요. 타입을 숫자로 구분해 놓는게;; 서버에서 enum을 쓰던 명확하게 구분이 필요할듯 합니다.<br> 
-테이블은 미리 만들어 놓아도 되고 저는 테스트기 때문에 테이블이 자동생성되도록 설정했고 굳이 따로 만들진 않았습니다. 테이블 스키마만 간단하게 보여드리면 다음과 같습니다.
+테이블은 미리 만들어 놓아도 되고 저는 예제용으로 테이블이 자동생성되도록 설정했고 굳이 따로 만들진 않았습니다. 테이블 스키마만 간단하게 보여드리면 다음과 같습니다.
 
 <p align="center">
 <img src="/images/Hibernate/envers/2.png"/>
 </p>
 
-만약, 이력관리하고 싶지 않은 필드들을 커스터마이징하게 바꾸고 싶다면 `@Audited`를 필드값으로 바꿔도 상관없습니다. 아래와 같이 바꾸면 title 필드는 이력관리에서 제외됩니다. 
+만약, 이력관리하고 싶지 않은 필드들을 커스터마이징하게 바꾸고 싶다면 `@Audited`를 필드값에 할당해도 상관없습니다. 아래와 같이 바꾸면 title 필드는 이력테이블에서 제외됩니다. 
 
 ```java
 @Data
@@ -121,9 +121,25 @@ public class Book implements Serializable {
 ```
 
 
+이력관련 테이블을 조회하기위한 인터페이스가 미리 만들어져 있습니다. 우리는 이를 잘 활용하면 됩니다. BookRepository 인터페이스에 RevisionRepository를 상속받도록 합니다. 
+이제 이력관련 테이블 API 4개를 제공받아 사용할 수 있습니다.
 
 ```java
 public interface BookRepository extends JpaRepository<Book, Long>, RevisionRepository<Book, Long, Integer> {
+}
+```
+
+```java
+@NoRepositoryBean
+public interface RevisionRepository extends Repository<T, ID> {
+	//최근 리비전 조회
+	Revision<N, T> findLastChangeRevision(ID id);
+	//id를 사용하여 해당 id의 모든 리비전 조회
+	Revisions<N, T> findRevisions(ID id);
+	//리비전을 페이징 처리하여 조회
+	Page<Revision<N, T>> findRevisions(ID id, Pageable pageable);
+	//특정 리비전 조회
+	Revision<N, T> findRevision(ID id, N revisionNumber);
 }
 ```
 
