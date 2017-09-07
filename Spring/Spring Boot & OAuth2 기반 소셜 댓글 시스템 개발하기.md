@@ -76,7 +76,7 @@ OAuth2에서 제공하는 인증 타입 방식은 현재 4가지가 있습니다
 
 ### clientAuthenticationScheme?
 `clientAuthenticationScheme`의 경우 디폴트는 `header`로 지정되며 `form`과 `query`는 같은 방식으로 동작합니다. 이 로직 처리는 `DefaultClientAuthenticationHandler` 클래스에서 진행되며 
-`header`의 경우 아래와 같이 clientId와 clientSecret을 Base64로 인코등히여 헤더에 포함되는 형식으로 request를 요청합니다.
+`header`의 경우 아래와 같이 clientId와 clientSecret을 Base64로 인코딩하여 헤더에 포함되는 형식으로 request를 요청합니다.
  이에 관한 자세한 사항은 [OAuth2 Spec 문서](http://www.rfc-editor.org/rfc/rfc7617.txt)를 참고하시기 바랍니다.
 <p align="center">
 <img src="/images/Spring/oauth2/scheme.png" width="80%"/>
