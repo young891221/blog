@@ -18,6 +18,7 @@ Rest 아키텍처를 만드는 것을 Restful이라고 칭합니다. 그럼 Rest
 - core-on-demand(optional)
 
 ## Restful하려면 어떻게 해야될까?
+https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming
 Restful하려면 Rest의 원칙부터 알아야 됩니다. 
 
 
